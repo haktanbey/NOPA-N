@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>#NoPain</title>
+  <title>#NoPain - Drop-Turf</title>
   
-  <!-- FAVICON EKLEDİK BURAYA -->
-  <link rel="icon" href="np.gif" type="image/x-icon"> <!-- Eğer favicon.ico kök klasördeyse -->
-  <!-- Alternatif: PNG kullanıyorsan (çoğu tarayıcı destekler) -->
-  <!-- <link rel="icon" href="https://i.imgur.com/ABC123.png" type="image/png"> --> <!-- Buraya kendi küçük ikon URL'ini koy -->
-  <!-- Apple touch icon vs. için ekstra istersen ekleriz -->
+  <!-- Favicon -->
+  <link rel="icon" href="/np.gif" type="image/x-icon">
+  <!-- Veya PNG: <link rel="icon" href="https://i.imgur.com/senin-favicon.png" type="image/png"> -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,169 +28,167 @@
     .container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 0 15px;
     }
     header {
       text-align: center;
-      padding: 60px 0 40px;
+      padding: 50px 0 30px;
       background: #000;
       position: relative;
     }
     .logo {
       font-family: 'Orbitron', sans-serif;
-      font-size: 7rem;
+      font-size: 6rem;
       font-weight: 900;
-      letter-spacing: 6px;
+      letter-spacing: 5px;
       background: linear-gradient(90deg, #fff, #e50914, #fff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 40px rgba(229, 9, 20, 0.7);
+      text-shadow: 0 0 35px rgba(229, 9, 20, 0.7);
     }
     .tag {
-      font-size: 2rem;
+      font-size: 1.6rem;
       color: #ccc;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     .gif-corner {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 180px;
-      height: 180px;
+      top: 15px;
+      right: 15px;
+      width: 140px;
+      height: 140px;
       z-index: 10;
       pointer-events: none;
       opacity: 0.9;
       transition: opacity 0.3s;
     }
-    .gif-corner:hover {
-      opacity: 1;
-    }
+    .gif-corner:hover { opacity: 1; }
     .gif-corner img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      border-radius: 12px;
-      box-shadow: 0 0 25px rgba(229, 9, 20, 0.5);
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
     }
+
+    /* GALERİ EKLEDİK - OYUN İÇİ FOTOĞRAFLAR */
+    .gallery {
+      margin: 30px 0 50px;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 10px 0;
+      scrollbar-width: thin;
+      scrollbar-color: #e50914 #111;
+    }
+    .gallery::-webkit-scrollbar {
+      height: 8px;
+    }
+    .gallery::-webkit-scrollbar-thumb {
+      background: #e50914;
+      border-radius: 4px;
+    }
+    .gallery-item {
+      display: inline-block;
+      margin: 0 12px;
+      width: 320px;
+      height: 200px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #222;
+      box-shadow: 0 0 15px rgba(229, 9, 20, 0.3);
+      transition: transform 0.3s;
+    }
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .main-content {
       display: flex;
       flex-wrap: wrap;
-      gap: 30px;
+      gap: 25px;
       justify-content: center;
     }
     .section {
       flex: 1;
-      min-width: 320px;
-      max-width: 420px;
+      min-width: 300px;
+      max-width: 400px;
       background: #0f0f0f;
       border: 1px solid #222;
       border-radius: 8px;
-      padding: 25px;
-      position: relative;
+      padding: 20px;
     }
     .section h2 {
       font-family: 'Orbitron', sans-serif;
       color: #e50914;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 900;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       border-bottom: 2px solid #e50914;
-      padding-bottom: 10px;
-      letter-spacing: 2px;
-    }
-    .players ul {
-      list-style: none;
+      padding-bottom: 8px;
+      letter-spacing: 1.5px;
     }
     .players li {
       position: relative;
-      padding: 12px 0 12px 25px;
-      font-size: 1.15rem;
+      padding: 10px 0 10px 20px;
+      font-size: 1.05rem;
       border-bottom: 1px solid #222;
     }
-    .players li:last-child {
-      border-bottom: none;
-    }
-    .players li::before {
-      content: '[';
+    .players li:last-child { border-bottom: none; }
+    .players li::before, .players li::after {
       color: #e50914;
-      position: absolute;
-      left: 0;
       font-weight: bold;
-    }
-    .players li::after {
-      content: ']';
-      color: #e50914;
       position: absolute;
-      right: 0;
-      font-weight: bold;
     }
-    .about p {
-      font-size: 1.1rem;
-      text-align: left;
-      margin-bottom: 15px;
-    }
-    .contact {
-      text-align: left;
-    }
-    .contact p {
-      font-size: 1.1rem;
-      margin-bottom: 15px;
-    }
+    .players li::before { content: '['; left: 0; }
+    .players li::after { content: ']'; right: 0; }
+    .about p { font-size: 1rem; margin-bottom: 12px; text-align: left; }
     .contact a {
       color: #e50914;
       text-decoration: none;
       display: block;
-      margin: 12px 0;
-      font-size: 1.2rem;
-      transition: 0.3s;
+      margin: 10px 0;
+      font-size: 1.1rem;
     }
-    .contact a:hover {
-      color: #fff;
-      text-shadow: 0 0 15px #e50914;
-    }
+    .contact a:hover { color: #fff; text-shadow: 0 0 12px #e50914; }
     .contact-logo {
       text-align: center;
-      margin: 50px 0 30px;
+      margin: 40px 0 20px;
     }
     .contact-logo .biglogo {
       font-family: 'Orbitron', sans-serif;
-      font-size: 4rem;
+      font-size: 3.5rem;
       font-weight: 900;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       background: linear-gradient(90deg, #fff, #e50914, #fff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 30px rgba(229, 9, 20, 0.6);
+      text-shadow: 0 0 25px rgba(229, 9, 20, 0.6);
     }
     footer {
       text-align: center;
-      padding: 40px 0;
+      padding: 30px 0;
       color: #555;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       border-top: 1px solid #111;
-      margin-top: 60px;
+      margin-top: 50px;
     }
-    @media (max-width: 900px) {
-      .main-content {
-        flex-direction: column;
-        align-items: center;
-      }
-      .section {
-        max-width: 95%;
-      }
-      .logo {
-        font-size: 5rem;
-      }
-      .contact-logo .biglogo {
-        font-size: 3.2rem;
-      }
-      .gif-corner {
-        width: 120px;
-        height: 120px;
-        top: 15px;
-        right: 15px;
-      }
+
+    /* TELEFON İÇİN KÜÇÜLTME AYARLARI */
+    @media (max-width: 768px) {
+      .logo { font-size: 4.5rem; }
+      .tag { font-size: 1.3rem; }
+      .gif-corner { width: 100px; height: 100px; top: 10px; right: 10px; }
+      .gallery-item { width: 260px; height: 160px; margin: 0 8px; }
+      .section { padding: 15px; min-width: 100%; max-width: none; }
+      .section h2 { font-size: 1.4rem; }
+      .contact-logo .biglogo { font-size: 2.8rem; }
+      .gallery { margin: 20px 0 40px; }
     }
   </style>
 </head>
@@ -203,15 +199,29 @@
     <div class="tag">• No Pain, No Win</div>
 
     <div class="gif-corner">
-      <img src="np.gif" alt="np.gif"> <!-- Burayı kendi GIF linkinle değiştir -->
+      <img src="np.gif" alt="NoPain GIF"> <!-- GIF'ini değiştir -->
     </div>
   </header>
 
+  <!-- OYUN İÇİ FOTOĞRAFLAR GALERİSİ -->
   <div class="container">
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="https://i.imgur.com/RESIM1.jpg" alt="NoPain Oyun İçi 1"> <!-- BURAYA KENDİ RESMİNİ KOYYY -->
+      </div>
+      <div class="gallery-item">
+        <img src="https://i.imgur.com/RESIM2.jpg" alt="NoPain Oyun İçi 2">
+      </div>
+      <div class="gallery-item">
+        <img src="https://i.imgur.com/RESIM3.jpg" alt="NoPain Oyun İçi 3">
+      </div>
+      <!-- İstersen 4. ekle: <div class="gallery-item"><img src="..." alt="..."></div> -->
+    </div>
+
     <div class="main-content">
 
       <div class="section players">
-        <h2>KLÁN ÜYELERİ</h2>
+        <h2>KLAN ÜYELERİ</h2>
         <ul>
           <li>~K4TR30S^nP+</li>
           <li>#Ya[R]amaz^nP+</li>
@@ -220,18 +230,17 @@
           <li>#bihter^nP</li>
           <li>Javeyska|^nP</li>
           <li>AidronLE^nP</li>
-          <li>#D!stant^nP</li>
         </ul>
       </div>
 
       <div class="section about">
         <h2>HAKKIMIZDA</h2>
-        <p>Biz #NoPain, MTA sokaklarının en sert, en kararlı ekibiyiz.</p>
+        <p>Biz #NoPain, MTA Klanlarının en sert, en kararlı ekibiyiz.</p>
         <p>Acı çekmeden zafer kazanılmaz. Bu yüzden ismimiz #NoPain.</p>
         <p>Drop, Turf, Freeroam... her modda rakiplerimizi ezip geçiyoruz.</p>
         <p>Klan lideri olarak ben [~K4TR30S^nP+], yıllardır bu sahnedeyim.</p>
         <p>Amacımız: Saygı, azim ve sürekli zirvede kalmak.</p>
-        <p>Pain yok, sadece zafer var. Katılmak ister misin? 💀🔴</p>
+        <p>Acı Yoksa Zafer De Yok! BizeKatılmak ister misin?🔴</p>
       </div>
 
       <div class="section contact">
@@ -239,7 +248,7 @@
         <p>Bize ulaşmak için aşağıdaki kanalları kullanabilirsin:</p>
         <a href="https://discord.gg/YZPeeYjUj" target="_blank">→ Discord Sunucumuza Katıl</a>
         <a href="https://www.instagram.com/k4treos/" target="_blank">→ Instagram</a>
-        <p style="margin-top: 30px;">Başvuru ve sorular için DM atabilirsin!</p>
+        <p style="margin-top: 25px;">Başvuru ve sorular için DM atabilirsin!</p>
 
         <div class="contact-logo">
           <div class="biglogo">#NoPain</div>
