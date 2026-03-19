@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>#NoPain - Drop-Turf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #000;
+      color: #fff;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 60px 0 40px;
+      background: #000;
+      position: relative;
+    }
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 7rem;
+      font-weight: 900;
+      letter-spacing: 6px;
+      background: linear-gradient(90deg, #fff, #e50914, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px rgba(229, 9, 20, 0.7);
+    }
+    .tag {
+      font-size: 2rem;
+      color: #ccc;
+      margin-top: 10px;
+    }
+    .gif-corner {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 180px;
+      height: 180px;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0.9;
+      transition: opacity 0.3s;
+    }
+    .gif-corner:hover {
+      opacity: 1;
+    }
+    .gif-corner img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(229, 9, 20, 0.5);
+    }
+    .main-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+    .section {
+      flex: 1;
+      min-width: 320px;
+      max-width: 420px;
+      background: #0f0f0f;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 25px;
+      position: relative;
+    }
+    .section h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #e50914;
+      font-size: 1.8rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e50914;
+      padding-bottom: 10px;
+      letter-spacing: 2px;
+    }
+    .players ul {
+      list-style: none;
+    }
+    .players li {
+      position: relative;
+      padding: 12px 0 12px 25px;
+      font-size: 1.15rem;
+      border-bottom: 1px solid #222;
+    }
+    .players li:last-child {
+      border-bottom: none;
+    }
+    .players li::before {
+      content: '[';
+      color: #e50914;
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+    .players li::after {
+      content: ']';
+      color: #e50914;
+      position: absolute;
+      right: 0;
+      font-weight: bold;
+    }
+    .about p {
+      font-size: 1.1rem;
+      text-align: left;
+      margin-bottom: 15px;
+    }
+    .contact {
+      text-align: left;
+    }
+    .contact p {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+    .contact a {
+      color: #e50914;
+      text-decoration: none;
+      display: block;
+      margin: 12px 0;
+      font-size: 1.2rem;
+      transition: 0.3s;
+    }
+    .contact a:hover {
+      color: #fff;
+      text-shadow: 0 0 15px #e50914;
+    }
+    .contact-logo {
+      text-align: center;
+      margin: 50px 0 30px;
+    }
+    .contact-logo .biglogo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, #fff, #e50914, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(229, 9, 20, 0.6);
+    }
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: #555;
+      font-size: 0.95rem;
+      border-top: 1px solid #111;
+      margin-top: 60px;
+    }
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      .section {
+        max-width: 95%;
+      }
+      .logo {
+        font-size: 5rem;
+      }
+      .contact-logo .biglogo {
+        font-size: 3.2rem;
+      }
+      .gif-corner {
+        width: 120px;
+        height: 120px;
+        top: 15px;
+        right: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">#NoPain</div>
+    <div class="tag">• No Pain, No Win</div>
+
+    <!-- SAĞ ÜST GIF BURAYA - KENDİ LİNKİNİ KOYYY -->
+    <div class="gif-corner">
+      <img src="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif" alt="NoPain GIF">
+      <!-- Örnek GIF, değiştir: https://i.imgur.com/abc123.gif veya tenor linki falan -->
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="main-content">
+
+      <div class="section players">
+        <h2>KLÁN ÜYELERİ</h2>
+        <ul>
+          <li>~K4TR30S^nP+</li>
+          <li>#Ya[R]amaz^nP+</li>
+          <li>Samurai^nP+</li>
+          <li>#SLOWS3EXX^nP</li>
+          <li>#bihter^nP</li>
+          <li>Javeyska|^nP</li>
+          <li>AidronLE^nP</li>
+        </ul>
+      </div>
+
+      <div class="section about">
+        <h2>HAKKIMIZDA</h2>
+        <p>Biz #NoPain, MTA sokaklarının en sert, en kararlı ekibiyiz.</p>
+        <p>Acı çekmeden zafer kazanılmaz. Bu yüzden ismimiz #NoPain.</p>
+        <p>Drop, Turf, Freeroam... her modda rakiplerimizi ezip geçiyoruz.</p>
+        <p>Klan lideri olarak ben [~K4TR30S^nP+], yıllardır bu sahnedeyim.</p>
+        <p>Amacımız: Saygı, azim ve sürekli zirvede kalmak.</p>
+        <p>Pain yok, sadece zafer var. Katılmak ister misin? 💀🔴</p>
+      </div>
+
+      <div class="section contact">
+        <h2>İLETİŞİM</h2>
+        <p>Bize ulaşmak için aşağıdaki kanalları kullanabilirsin:</p>
+        <a href="https://discord.gg/YZPeeYjUj" target="_blank">→ Discord Sunucumuza Katıl</a>
+        <a href="https://www.instagram.com/k4treos/" target="_blank">→ Instagram</a>
+        <p style="margin-top: 30px;">Başvuru ve sorular için DM atabilirsin!</p>
+
+        <div class="contact-logo">
+          <div class="biglogo">#NoPain</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    © 2026 #NoPain • No Pain, No Win • Made By ~K4TR30S^nP+
+  </footer>
+
+</body>
+</html>
