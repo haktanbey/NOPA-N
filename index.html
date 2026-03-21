@@ -1,211 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ACCESS DENIED - Elite Node 0x1337</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Flappy Kuş</title>
   <style>
-    body, html {
-      height: 100%;
+    body {
       margin: 0;
       padding: 0;
-      background: #000;
-      color: #0f0;
-      font-family: 'Courier New', Courier, monospace;
-      overflow: hidden;
-      image-rendering: pixelated;
-    }
-
-    #matrix {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 1;
-    }
-
-    .overlay {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 5;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
-    }
-
-    .content {
-      position: relative;
-      z-index: 10;
-      padding: 40px;
-      max-width: 1100px;
-      margin: 0 auto;
       height: 100vh;
+      overflow: hidden;
+      background: #71c5cf;
+      font-family: Arial, sans-serif;
+      touch-action: manipulation;
+    }
+    canvas {
+      display: block;
+    }
+    #ui {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      color: white;
+      text-shadow: 2px 2px 4px #000;
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 5vw;
     }
-
-    h1 {
-      font-size: 3.2rem;
-      margin: 0 0 20px 0;
-      text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
-      letter-spacing: 6px;
-      animation: flicker 4s infinite alternate;
-    }
-
-    .blink {
-      animation: blink 1.2s step-end infinite;
-    }
-
-    .terminal {
-      background: rgba(0,20,0,0.4);
-      border: 1px solid #0a0;
-      padding: 20px;
-      margin: 30px 0;
-      height: 420px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: inset 0 0 30px #0f03;
-    }
-
-    .line {
-      white-space: pre;
-      opacity: 0.9;
-    }
-
-    .prompt {
-      color: #0f0;
-    }
-
-    .warning {
-      color: #f00;
-      text-shadow: 0 0 8px #f00;
-    }
-
-    .ascii-art {
-      font-size: 0.9rem;
-      line-height: 1.1;
-      margin: 20px 0;
-      white-space: pre;
-      color: #0c0;
-    }
-
-    @keyframes flicker {
-      0%,19%,21%,23%,25%,54%,56%,100% { opacity:1; text-shadow:0 0 10px #0f0;}
-      20%,24%,55% { opacity:0.4; text-shadow:none; }
-    }
-
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
-    .scanline {
+    #score {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, transparent 50%, rgba(0,255,0,0.04) 50%, transparent 51%);
-      background-size: 100% 4px;
-      pointer-events: none;
-      animation: scan 8s linear infinite;
-      z-index: 3;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10vw;
+      font-weight: bold;
     }
-
-    @keyframes scan {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(100%); }
+    #start-screen, #game-over {
+      background: rgba(0,0,0,0.5);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      pointer-events: all;
     }
-
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      height: 1.2em;
-      background: #0f0;
-      vertical-align: middle;
-      animation: blink 0.8s infinite;
+    button {
+      margin-top: 20px;
+      padding: 15px 40px;
+      font-size: 6vw;
+      background: #ffcc00;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
-<div class="overlay"></div>
-<div class="scanline"></div>
+<canvas id="c"></canvas>
 
-<div class="content">
-  <h1>SHADOW GATE <span class="blink">[OFFLINE]</span></h1>
-
-  <div class="terminal">
-    <div class="line">╔════════════════════════════════════════════════════════════╗</div>
-    <div class="line">║  NODE 0x1337          ELITE ACCESS TERMINAL v1.9.8-beta     ║</div>
-    <div class="line">║  Last intrusion attempt: 21-MAR-2026 03:17:44 UTC          ║</div>
-    <div class="line">╠════════════════════════════════════════════════════════════╣</div>
-    <div class="line">║ > whoami                                                   ║</div>
-    <div class="line">║ root@darkpool ~ $                                          ║</div>
-    <div class="line">║                                                            ║</div>
-    <div class="line warning">║ [!] TRACE ROUTE ACTIVE - 7 HOPS FROM FBI DATACENTER       ║</div>
-    <div class="line">║                                                            ║</div>
-    <div class="line">║ > cat /etc/motd                                            ║</div>
-    <div class="line ascii-art">
-    ║          .-""""""""-.
-    ║        .'          '.
-    ║       /   ʜᴀᴄᴋ ᴛʜᴇ    \
-    ║      : ,          , :  ║
-    ║       `._         _.'  ║
-    ║          `"'"""""'"`   ║
-    </div>
-    <div class="line">║                                                            ║</div>
-    <div class="line">║ [SYS] Quantum firewall bypassed in 0.0042s                 ║</div>
-    <div class="line warning">║ [ALERT] Your IP was logged 3× - spoofing recommended      ║</div>
-    <div class="line">║                                                            ║</div>
-    <div class="line prompt">root@darkpool ~ $ <span class="cursor">█</span></div>
+<div id="ui">
+  <div id="score">0</div>
+  
+  <div id="start-screen">
+    <h1>Flappy Kuş</h1>
+    <p>Ekranı dokun / boşluk tuşuna bas</p>
+    <button onclick="startGame()">BAŞLA</button>
   </div>
 
-  <div style="margin-top:auto; text-align:center; opacity:0.6; font-size:0.9rem;">
-    40 YILDIR SİSTEMLERDEYİM — VE HALA KİMSE BENİ YAKALAYAMADI<br>
-    0x1337 © 1986–2026 — NO MERCY • NO TRACE
+  <div id="game-over" style="display:none">
+    <h1>Game Over</h1>
+    <p>Skor: <span id="final-score">0</span></p>
+    <button onclick="resetGame()">Tekrar Oyna</button>
   </div>
 </div>
 
 <script>
-// Matrix yağmuru
-const canvas = document.getElementById('matrix');
+// ================ AYARLAR ================
+const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+let cw, ch;
+function resize() {
+  cw = canvas.width = window.innerWidth;
+  ch = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
 
-const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$+-*/=%"#&@';
-const fontSize = 14;
-const columns = canvas.width / fontSize;
+// Oyun değişkenleri
+let bird = { x: 120, y: ch/2, vy: 0, size: 34, gravity: 0.6, jump: -11 };
+let pipes = [];
+let score = 0;
+let gameRunning = false;
+let frame = 0;
 
-const drops = Array(Math.floor(columns)).fill(1);
+// Skor elementi
+const scoreEl = document.getElementById('score');
+const startScreen = document.getElementById('start-screen');
+const gameOverScreen = document.getElementById('game-over');
+const finalScoreEl = document.getElementById('final-score');
 
-function draw() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = '#0f0';
-  ctx.font = fontSize + 'px monospace';
-
-  for (let i = 0; i < drops.length; i++) {
-    const text = chars.charAt(Math.floor(Math.random() * chars.length));
-    const x = i * fontSize;
-    const y = drops[i] * fontSize;
-
-    ctx.fillText(text, x, y);
-
-    if (y > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
-    drops[i]++;
-  }
+// Dokunmatik + klavye kontrol
+function flap() {
+  if (!gameRunning) return;
+  bird.vy = bird.jump;
 }
 
-setInterval(draw, 50);
-
-window.addEventListener('resize', () => {
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
+window.addEventListener('keydown', e => {
+  if (e.code === 'Space' || e.code === 'KeyS') {
+    e.preventDefault();
+    flap();
+  }
 });
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  flap();
+});
+canvas.addEventListener('click', flap); // masaüstü için de
+
+// Yeni boru ekle
+function addPipe() {
+  const gap = 180 + Math.random() * 40;
+  const minHeight = 100;
+  const maxHeight = ch - gap - minHeight;
+  const h = minHeight + Math.random() * (maxHeight - minHeight);
+  
+  pipes.push({
+    x: cw,
+    top: h,
+    bottom: ch - (h + gap),
+    passed: false
+  });
+}
+
+// Çarpışma kontrolü
+function checkCollision() {
+  if (bird.y < 0 || bird.y + bird.size > ch) return true;
+
+  for (let p of pipes) {
+    // Üst boru
+    if (bird.x + bird.size > p.x && bird.x < p.x + 70) {
+      if (bird.y < p.top || bird.y + bird.size > ch - p.bottom) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// Oyun döngüsü
+function loop() {
+  ctx.fillStyle = "#71c5cf";
+  ctx.fillRect(0, 0, cw, ch);
+
+  // Zemin efekti (basit)
+  ctx.fillStyle = "#5db060";
+  ctx.fillRect(0, ch-60, cw, 60);
+
+  // Kuş
+  bird.vy += bird.gravity;
+  bird.y += bird.vy;
+
+  ctx.fillStyle = "#ffcc00";
+  ctx.beginPath();
+  ctx.arc(bird.x, bird.y + bird.size/2, bird.size/2, 0, Math.PI*2);
+  ctx.fill();
+
+  // Göz
+  ctx.fillStyle = "#000";
+  ctx.beginPath();
+  ctx.arc(bird.x + 12, bird.y + 12, 6, 0, Math.PI*2);
+  ctx.fill();
+
+  // Borular
+  if (gameRunning) {
+    frame++;
+    if (frame % 110 === 0) addPipe();
+
+    for (let i = pipes.length-1; i >= 0; i--) {
+      let p = pipes[i];
+      p.x -= 2.8;
+
+      // Üst boru
+      ctx.fillStyle = "#569c56";
+      ctx.fillRect(p.x, 0, 70, p.top);
+      // Alt boru
+      ctx.fillRect(p.x, ch - p.bottom, 70, p.bottom);
+
+      // Skor geçme
+      if (!p.passed && p.x + 70 < bird.x) {
+        p.passed = true;
+        score++;
+        scoreEl.textContent = score;
+      }
+
+      // Ekran dışına çıkanları sil
+      if (p.x < -80) pipes.splice(i,1);
+    }
+  }
+
+  // Çarpışma + game over
+  if (gameRunning && checkCollision()) {
+    gameRunning = false;
+    finalScoreEl.textContent = score;
+    gameOverScreen.style.display = 'block';
+  }
+
+  requestAnimationFrame(loop);
+}
+
+// Başlat / sıfırla
+function startGame() {
+  startScreen.style.display = 'none';
+  gameOverScreen.style.display = 'none';
+  gameRunning = true;
+  score = 0;
+  scoreEl.textContent = "0";
+  bird.y = ch/2;
+  bird.vy = 0;
+  pipes = [];
+  frame = 0;
+}
+
+function resetGame() {
+  startGame();
+}
+
+// İlk boruyu biraz gecikmeyle ekle
+setTimeout(() => {
+  if (gameRunning) addPipe();
+}, 1500);
+
+loop();
 </script>
 </body>
 </html>
