@@ -1,177 +1,237 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>#NoPain - Drop-Turf</title>
+  <title>neonvoid</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg: #0a0012;
+      --neon1: #00f0ff;
+      --neon2: #ff00aa;
+      --text: #e0f7ff;
+      --accent: #ffea00;
     }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'Roboto', sans-serif;
-      background: #0a0a0a;
-      color: #fff;
-      line-height: 1.6;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto Mono', monospace;
+      overflow-x: hidden;
       min-height: 100vh;
     }
+    canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
     .container {
-      max-width: 1400px;
+      position: relative;
+      z-index: 10;
+      padding: 2rem;
+      max-width: 1800px;
       margin: 0 auto;
-      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 180px;
+      gap: 1.2rem;
     }
-    header {
-      text-align: center;
-      padding: 40px 0 60px;
-      background: linear-gradient(to bottom, #111, #000);
+    .card {
+      background: rgba(10, 0, 18, 0.6);
+      border: 1px solid rgba(0,240,255,0.12);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      transition: all 0.4s ease;
+      position: relative;
     }
-    .logo {
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: var(--neon1);
+      box-shadow: 0 0 40px rgba(0,240,255,0.25),
+                  inset 0 0 20px rgba(0,240,255,0.08);
+    }
+    .big    { grid-column: span 2; grid-row: span 2; }
+    .med    { grid-column: span 2; }
+    .small  { }
+
+    .glitch {
       font-family: 'Orbitron', sans-serif;
-      font-size: 5rem;
+      font-size: 4.8rem;
       font-weight: 700;
-      letter-spacing: 4px;
-      background: linear-gradient(90deg, #fff, #e50914, #fff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 30px rgba(229, 9, 20, 0.6);
-    }
-    .tag {
-      font-size: 1.8rem;
-      margin-top: 10px;
-      color: #ccc;
-    }
-    .main-content {
+      color: var(--neon1);
+      text-shadow: 
+        0 0 10px var(--neon1),
+        0 0 30px var(--neon2),
+        2px 2px 0 var(--accent),
+       -2px -2px 0 var(--neon2);
+      animation: glitch 4s infinite;
+      letter-spacing: -2px;
+      text-align: center;
+      padding: 1.5rem;
+      height: 100%;
       display: flex;
-      flex-wrap: wrap;
-      gap: 40px;
+      align-items: center;
       justify-content: center;
     }
-    .section {
-      flex: 1;
-      min-width: 300px;
-      max-width: 400px;
-      background: rgba(20, 20, 20, 0.7);
-      border: 1px solid #222;
-      border-radius: 12px;
-      padding: 30px;
-      backdrop-filter: blur(6px);
+
+    @keyframes glitch {
+      0%,100% { transform: translate(0); }
+      2%  { transform: translate(-2px, 2px); }
+      4%  { transform: translate(2px, -2px); }
+      6%  { transform: translate(-1px, 1px); }
     }
-    .section h2 {
-      font-family: 'Orbitron', sans-serif;
-      color: #e50914;
-      margin-bottom: 20px;
-      font-size: 2rem;
-      text-align: center;
-      border-bottom: 2px solid #e50914;
-      padding-bottom: 10px;
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.8) contrast(1.1);
+      transition: all 0.6s;
     }
-    .players ul {
-      list-style: none;
+    .card:hover img {
+      filter: brightness(1) contrast(1.3) saturate(1.4);
+      transform: scale(1.08);
     }
-    .players li {
-      background: #111;
-      margin: 10px 0;
-      padding: 12px 18px;
-      border-radius: 8px;
-      border-left: 5px solid #e50914;
+
+    .spotify {
+      padding: 1.5rem;
       font-size: 1.1rem;
     }
-    .about p {
-      font-size: 1.15rem;
-      text-align: center;
-    }
-    .contact {
-      text-align: center;
-    }
-    .contact a {
-      color: #e50914;
-      text-decoration: none;
-      font-size: 1.3rem;
-      display: block;
-      margin: 15px 0;
-      transition: 0.3s;
-    }
-    .contact a:hover {
-      color: #fff;
-      text-shadow: 0 0 15px #e50914;
-    }
-    footer {
-      text-align: center;
-      padding: 40px 0;
-      color: #777;
-      font-size: 0.9rem;
-      border-top: 1px solid #222;
-      margin-top: 60px;
-    }
+    .spotify strong { color: var(--neon1); }
+
     @media (max-width: 900px) {
-      .main-content {
-        flex-direction: column;
-        align-items: center;
+      .container {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 220px;
       }
-      .section {
-        max-width: 90%;
-      }
+      .big, .med, .small { grid-column: span 1 !important; grid-row: span 1 !important; }
+      .glitch { font-size: 3.8rem; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="logo">#NoPain</div>
-    <div class="tag">• No Pain, No Win</div>
-  </header>
+<canvas id="bg"></canvas>
 
-  <div class="container">
-    <div class="main-content">
+<div class="container">
+  <div class="card big">
+    <div class="glitch">NEONVOID</div>
+  </div>
 
-      <!-- SOL: Oyuncular -->
-      <div class="section players">
-        <h2>KLAN ÜYELERİ</h2>
-        <ul>
-          <li>[NoPain]~K4TR30S^nP+</li>
-          <li>[NoPain]#Ya[R]amaz^nP+</li>
-          <li>[NoPain]Samurai^nP+</li>
-          <li>[NoPain]#SLOWS3EXX^nP</li>
-          <li>[NoPain]#bihter^nP</li>
-          <li>[NoPain]Javeyska|^nP</li>
-          <li>[NoPain]AidronLE^nP</li>
-          <!-- Buraya yeni isim ekle, örnek olarak bıraktım -->
-        </ul>
-      </div>
+  <div class="card med">
+    <img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=900&auto=format&fit=crop&q=80" alt="cyber city">
+  </div>
 
-      <!-- ORTA: Hakkımızda / Kendini tanıt -->
-      <div class="section about">
-        <h2>HAKKIMIZDA</h2>
-        <p>
-          Biz #NoPain, MTA sokaklarının en sert, en kararlı ekibiyiz.<br><br>
-          Acı çekmeden zafer kazanılmaz. Bu yüzden ismimiz #NoPain.<br>
-          Drop, Turf, Freeroam... her modda rakiplerimizi ezip geçiyoruz.<br><br>
-          Klan lideri olarak ben [~K4TR30S^nP+], yıllardır bu sahnedeyim.<br>
-          Amacımız: Saygı, azim ve sürekli zirvede kalmak.<br><br>
-          Acı Yoksa Zafer De Yok. Katılmak ister misin? 💀🔴
-        </p>
-      </div>
-
-      <!-- SAĞ: İletişim -->
-      <div class="section contact">
-        <h2>İLETİŞİM</h2>
-        <p>Bize ulaşmak için aşağıdaki kanalları kullanabilirsin:</p>
-        <a href="https://discord.gg/YZPeeYjUj" target="_blank">→ Discord Sunucumuza Katıl</a>
-        <a href="https://www.instagram.com/nopainmta/" target="_blank">→ Instagram</a>
-        <p style="margin-top:30px; font-size:1rem;">Başvuru ve sorular için DM atabilirsin!</p>
-      </div>
-
+  <div class="card small">
+    <div style="padding:1.5rem; font-size:1.3rem;">
+      <div>ŞU AN:</div>
+      <strong style="color:var(--neon2)">gece 03:47</strong><br>
+      <div style="margin-top:0.8rem;">mood: glitch mode</div>
     </div>
   </div>
 
-  <footer>
-    ©️ 2026 #NoPain Made By ~K4TR30S^nP+
-  </footer>
+  <div class="card med">
+    <img src="https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=900&auto=format&fit=crop&q=80" alt="neon portrait">
+  </div>
 
+  <div class="card small spotify">
+    <strong>Şu an çalan</strong><br><br>
+    The Weeknd - Blinding Lights<br>
+    <small style="opacity:0.7;">(ama loop'ta başka bi şey var aslında)</small>
+  </div>
+
+  <div class="card small">
+    <div style="padding:1.5rem;">
+      son post:<br>
+      <strong style="color:var(--accent)">"hiçbir şey gerçek değil"</strong>
+    </div>
+  </div>
+
+  <div class="card big">
+    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&auto=format&fit=crop&q=80" alt="cyberpunk street">
+  </div>
+</div>
+
+<script>
+// basit particle + mouse takip efekti
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+const mouse = { x: null, y: null };
+
+window.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    if (mouse.x && mouse.y) {
+      const dx = mouse.x - this.x;
+      const dy = mouse.y - this.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 120) {
+        this.x += dx * 0.01;
+        this.y += dy * 0.01;
+      }
+    }
+
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  draw() {
+    ctx.fillStyle = 'rgba(0,240,255,0.5)';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function init() {
+  particles = [];
+  for (let i = 0; i < 80; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function animate() {
+  ctx.fillStyle = 'rgba(10,0,18,0.05)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  requestAnimationFrame(animate);
+}
+
+init();
+animate();
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  init();
+});
+</script>
 </body>
 </html>
