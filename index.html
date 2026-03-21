@@ -3,69 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Flappy Kuş</title>
+  <title>Block Blast Klon</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       height: 100vh;
-      overflow: hidden;
-      background: #71c5cf;
+      background: #1a1a2e;
+      color: #e0e0e0;
       font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       touch-action: manipulation;
+      overflow: hidden;
+    }
+    #game-container {
+      position: relative;
+      width: 90vmin;
+      height: 90vmin;
+      max-width: 500px;
+      max-height: 500px;
     }
     canvas {
-      display: block;
+      width: 100%;
+      height: 100%;
+      background: #16213e;
+      border: 4px solid #0f3460;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(0,255,255,0.2);
     }
     #ui {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 10px; left: 10px; right: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 6vw;
+      font-weight: bold;
       pointer-events: none;
-      color: white;
-      text-shadow: 2px 2px 4px #000;
+    }
+    #next-pieces {
+      position: absolute;
+      bottom: 10px; left: 10px; right: 10px;
+      height: 15%;
+      display: flex;
+      justify-content: space-around;
+      pointer-events: all;
+    }
+    .piece-preview {
+      width: 30%;
+      height: 100%;
+      background: rgba(255,255,255,0.08);
+      border: 2px dashed #00ffff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #start-screen, #game-over {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: 5vw;
-    }
-    #score {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10vw;
-      font-weight: bold;
-    }
-    #start-screen, #game-over {
-      background: rgba(0,0,0,0.5);
-      padding: 30px;
-      border-radius: 15px;
+      font-size: 8vw;
       text-align: center;
       pointer-events: all;
     }
     button {
       margin-top: 20px;
-      padding: 15px 40px;
-      font-size: 6vw;
-      background: #ffcc00;
+      padding: 15px 50px;
+      font-size: 7vw;
+      background: #00d4ff;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
+      color: #000;
       font-weight: bold;
       cursor: pointer;
     }
+    button:hover { background: #00ffff; }
   </style>
 </head>
 <body>
 
-<canvas id="c"></canvas>
+<div id="game-container">
+  <canvas id="c"></canvas>
+  <div id="ui">
+    <div>Skor: <span id="score">0</span></div>
+    <div>Combo: <span id="combo">0</span>x</div>
+  </div>
+  <div id="next-pieces">
+    <div class="piece-preview" id="p1"></div>
+    <div class="piece-preview" id="p2"></div>
+    <div class="piece-preview" id="p3"></div>
+  </div>
 
-<div id="ui">
-  <div id="score">0</div>
-  
   <div id="start-screen">
-    <h1>Flappy Kuş</h1>
-    <p>Ekranı dokun / boşluk tuşuna bas</p>
+    <h1>Block Blast</h1>
+    <p>3 blok yerleştir, satır/sütun doldur → temizle!</p>
     <button onclick="startGame()">BAŞLA</button>
   </div>
 
@@ -80,159 +116,284 @@
 // ================ AYARLAR ================
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
-
-let cw, ch;
-function resize() {
-  cw = canvas.width = window.innerWidth;
-  ch = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
-
-// Oyun değişkenleri
-let bird = { x: 120, y: ch/2, vy: 0, size: 34, gravity: 0.6, jump: -11 };
-let pipes = [];
-let score = 0;
-let gameRunning = false;
-let frame = 0;
-
-// Skor elementi
 const scoreEl = document.getElementById('score');
+const comboEl = document.getElementById('combo');
 const startScreen = document.getElementById('start-screen');
 const gameOverScreen = document.getElementById('game-over');
 const finalScoreEl = document.getElementById('final-score');
 
-// Dokunmatik + klavye kontrol
-function flap() {
-  if (!gameRunning) return;
-  bird.vy = bird.jump;
+let cw = canvas.width = 400;
+let ch = canvas.height = 400;
+let gridSize = 8;
+let cell = cw / gridSize;
+let grid = Array(gridSize).fill().map(() => Array(gridSize).fill(0));
+
+let currentPieces = [];
+let selectedPiece = null;
+let score = 0;
+let combo = 0;
+let gameRunning = false;
+
+// Renkler (farklı şekiller için)
+const colors = ['#ff3366', '#33ff99', '#3366ff', '#ffcc33', '#cc33ff', '#33ffff'];
+
+// Tüm olası tetromino benzeri şekiller (dönüşsüz, Block Blast gibi)
+const shapes = [
+  [[1]],                     // tek
+  [[1,1]],                   // 1x2
+  [[1],[1]],                 // 2x1
+  [[1,1,1]],                 // 1x3
+  [[1],[1],[1]],             // 3x1
+  [[1,1],[1,0]],             // L küçük
+  [[1,1],[0,1]],
+  [[1,0],[1,1]],
+  [[0,1],[1,1]],
+  [[1,1,1],[0,1,0]],         // T
+  [[1,1,1],[1,0,0]],         // L
+  [[1,1,1],[0,0,1]],
+  [[0,1,0],[1,1,1]],
+  [[1,0,0],[1,1,1]],
+  [[1,1],[1,1]],             // kare 2x2
+  [[1,1,1,1]],               // 1x4
+  [[1],[1],[1],[1]],         // 4x1
+  [[1,1,1],[1,1,1]],         // 2x3 dikdörtgen vs.
+  [[1,1],[1,1],[1,1]]
+];
+
+// Yeni 3 parça üret
+function generatePieces() {
+  currentPieces = [];
+  for (let i = 0; i < 3; i++) {
+    let shape = shapes[Math.floor(Math.random() * shapes.length)];
+    let color = colors[Math.floor(Math.random() * colors.length)];
+    currentPieces.push({ shape, color, placed: false });
+  }
+  drawNextPieces();
 }
 
-window.addEventListener('keydown', e => {
-  if (e.code === 'Space' || e.code === 'KeyS') {
-    e.preventDefault();
-    flap();
-  }
-});
-
-canvas.addEventListener('touchstart', e => {
-  e.preventDefault();
-  flap();
-});
-canvas.addEventListener('click', flap); // masaüstü için de
-
-// Yeni boru ekle
-function addPipe() {
-  const gap = 180 + Math.random() * 40;
-  const minHeight = 100;
-  const maxHeight = ch - gap - minHeight;
-  const h = minHeight + Math.random() * (maxHeight - minHeight);
-  
-  pipes.push({
-    x: cw,
-    top: h,
-    bottom: ch - (h + gap),
-    passed: false
+function drawNextPieces() {
+  const previews = [document.getElementById('p1'), document.getElementById('p2'), document.getElementById('p3')];
+  previews.forEach((el, i) => {
+    if (!currentPieces[i] || currentPieces[i].placed) {
+      el.innerHTML = '';
+      return;
+    }
+    let miniCanvas = document.createElement('canvas');
+    let s = currentPieces[i].shape;
+    let w = s[0].length * 20;
+    let h = s.length * 20;
+    miniCanvas.width = w + 40;
+    miniCanvas.height = h + 40;
+    let mctx = miniCanvas.getContext('2d');
+    mctx.fillStyle = currentPieces[i].color;
+    for (let y = 0; y < s.length; y++) {
+      for (let x = 0; x < s[y].length; x++) {
+        if (s[y][x]) {
+          mctx.fillRect(20 + x*20, 20 + y*20, 18, 18);
+        }
+      }
+    }
+    el.innerHTML = '';
+    el.appendChild(miniCanvas);
   });
 }
 
-// Çarpışma kontrolü
-function checkCollision() {
-  if (bird.y < 0 || bird.y + bird.size > ch) return true;
+// Grid çiz + bloklar
+function draw() {
+  ctx.clearRect(0,0,cw,ch);
 
-  for (let p of pipes) {
-    // Üst boru
-    if (bird.x + bird.size > p.x && bird.x < p.x + 70) {
-      if (bird.y < p.top || bird.y + bird.size > ch - p.bottom) {
-        return true;
+  // Izgara çizgileri
+  ctx.strokeStyle = '#0f3460';
+  for (let i = 0; i <= gridSize; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i*cell, 0);
+    ctx.lineTo(i*cell, ch);
+    ctx.moveTo(0, i*cell);
+    ctx.lineTo(cw, i*cell);
+    ctx.stroke();
+  }
+
+  // Yerleştirilmiş bloklar
+  for (let y = 0; y < gridSize; y++) {
+    for (let x = 0; x < gridSize; x++) {
+      if (grid[y][x]) {
+        ctx.fillStyle = grid[y][x];
+        ctx.fillRect(x*cell + 2, y*cell + 2, cell-4, cell-4);
       }
     }
   }
-  return false;
+
+  // Seçili parça hover efekti
+  if (selectedPiece) {
+    let mx = mouse.x - canvas.offsetLeft;
+    let my = mouse.y - canvas.offsetTop;
+    let gx = Math.floor(mx / cell);
+    let gy = Math.floor(my / cell);
+
+    if (canPlace(selectedPiece.shape, gx, gy)) {
+      ctx.globalAlpha = 0.4;
+      ctx.fillStyle = selectedPiece.color;
+      for (let py = 0; py < selectedPiece.shape.length; py++) {
+        for (let px = 0; px < selectedPiece.shape[py].length; px++) {
+          if (selectedPiece.shape[py][px]) {
+            ctx.fillRect((gx+px)*cell + 2, (gy+py)*cell + 2, cell-4, cell-4);
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+  }
 }
+
+// Yerleştirilebilir mi?
+function canPlace(shape, gx, gy) {
+  if (gx < 0 || gy < 0) return false;
+  for (let py = 0; py < shape.length; py++) {
+    for (let px = 0; px < shape[py].length; px++) {
+      if (shape[py][px]) {
+        let nx = gx + px;
+        let ny = gy + py;
+        if (nx >= gridSize || ny >= gridSize || grid[ny][nx]) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+
+// Yerleştir
+function place(shape, gx, gy, color) {
+  for (let py = 0; py < shape.length; py++) {
+    for (let px = 0; px < shape[py].length; px++) {
+      if (shape[py][px]) {
+        grid[gy + py][gx + px] = color;
+      }
+    }
+  }
+  checkLines();
+}
+
+// Satır/sütun temizle + combo
+function checkLines() {
+  let cleared = 0;
+
+  // Satırlar
+  for (let y = 0; y < gridSize; y++) {
+    if (grid[y].every(cell => cell !== 0)) {
+      grid[y].fill(0);
+      cleared++;
+    }
+  }
+
+  // Sütunlar
+  for (let x = 0; x < gridSize; x++) {
+    let full = true;
+    for (let y = 0; y < gridSize; y++) {
+      if (grid[y][x] === 0) { full = false; break; }
+    }
+    if (full) {
+      for (let y = 0; y < gridSize; y++) grid[y][x] = 0;
+      cleared++;
+    }
+  }
+
+  if (cleared > 0) {
+    combo++;
+    let points = cleared * 10 * combo;
+    score += points;
+    scoreEl.textContent = score;
+    comboEl.textContent = combo;
+  } else {
+    combo = 0;
+    comboEl.textContent = 0;
+  }
+
+  // Tüm blokları temizlediysen ekstra bonus (isteğe göre)
+  if (grid.flat().every(c => c === 0)) score += 200;
+}
+
+// Oyun bitti mi?
+function gameOverCheck() {
+  for (let piece of currentPieces) {
+    if (piece.placed) continue;
+    for (let y = 0; y < gridSize; y++) {
+      for (let x = 0; x < gridSize; x++) {
+        if (canPlace(piece.shape, x, y)) return false;
+      }
+    }
+  }
+  gameRunning = false;
+  finalScoreEl.textContent = score;
+  gameOverScreen.style.display = 'flex';
+}
+
+// Fare/dokunmatik takip
+let mouse = { x: 0, y: 0 };
+canvas.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  mouse.x = e.touches[0].clientX;
+  mouse.y = e.touches[0].clientY;
+});
+
+// Tıklama / dokunma ile yerleştir
+canvas.addEventListener('click', e => {
+  if (!gameRunning || !selectedPiece) return;
+  let mx = mouse.x - canvas.offsetLeft;
+  let my = mouse.y - canvas.offsetTop;
+  let gx = Math.floor(mx / cell);
+  let gy = Math.floor(my / cell);
+
+  if (canPlace(selectedPiece.shape, gx, gy)) {
+    place(selectedPiece.shape, gx, gy, selectedPiece.color);
+    selectedPiece.placed = true;
+    selectedPiece = null;
+    draw();
+
+    // Tüm parçalar yerleştirildiyse yeni set
+    if (currentPieces.every(p => p.placed)) {
+      generatePieces();
+    }
+    gameOverCheck();
+  }
+});
+
+// Parça seç (önizleme tıklama)
+document.querySelectorAll('.piece-preview').forEach((el, i) => {
+  el.addEventListener('click', () => {
+    if (currentPieces[i] && !currentPieces[i].placed) {
+      selectedPiece = currentPieces[i];
+    }
+  });
+});
 
 // Oyun döngüsü
 function loop() {
-  ctx.fillStyle = "#71c5cf";
-  ctx.fillRect(0, 0, cw, ch);
-
-  // Zemin efekti (basit)
-  ctx.fillStyle = "#5db060";
-  ctx.fillRect(0, ch-60, cw, 60);
-
-  // Kuş
-  bird.vy += bird.gravity;
-  bird.y += bird.vy;
-
-  ctx.fillStyle = "#ffcc00";
-  ctx.beginPath();
-  ctx.arc(bird.x, bird.y + bird.size/2, bird.size/2, 0, Math.PI*2);
-  ctx.fill();
-
-  // Göz
-  ctx.fillStyle = "#000";
-  ctx.beginPath();
-  ctx.arc(bird.x + 12, bird.y + 12, 6, 0, Math.PI*2);
-  ctx.fill();
-
-  // Borular
-  if (gameRunning) {
-    frame++;
-    if (frame % 110 === 0) addPipe();
-
-    for (let i = pipes.length-1; i >= 0; i--) {
-      let p = pipes[i];
-      p.x -= 2.8;
-
-      // Üst boru
-      ctx.fillStyle = "#569c56";
-      ctx.fillRect(p.x, 0, 70, p.top);
-      // Alt boru
-      ctx.fillRect(p.x, ch - p.bottom, 70, p.bottom);
-
-      // Skor geçme
-      if (!p.passed && p.x + 70 < bird.x) {
-        p.passed = true;
-        score++;
-        scoreEl.textContent = score;
-      }
-
-      // Ekran dışına çıkanları sil
-      if (p.x < -80) pipes.splice(i,1);
-    }
-  }
-
-  // Çarpışma + game over
-  if (gameRunning && checkCollision()) {
-    gameRunning = false;
-    finalScoreEl.textContent = score;
-    gameOverScreen.style.display = 'block';
-  }
-
+  draw();
   requestAnimationFrame(loop);
 }
 
-// Başlat / sıfırla
+// Başlat
 function startGame() {
   startScreen.style.display = 'none';
   gameOverScreen.style.display = 'none';
-  gameRunning = true;
+  grid = Array(gridSize).fill().map(() => Array(gridSize).fill(0));
   score = 0;
-  scoreEl.textContent = "0";
-  bird.y = ch/2;
-  bird.vy = 0;
-  pipes = [];
-  frame = 0;
+  combo = 0;
+  scoreEl.textContent = 0;
+  comboEl.textContent = 0;
+  generatePieces();
+  selectedPiece = null;
+  gameRunning = true;
 }
 
 function resetGame() {
   startGame();
 }
-
-// İlk boruyu biraz gecikmeyle ekle
-setTimeout(() => {
-  if (gameRunning) addPipe();
-}, 1500);
 
 loop();
 </script>
