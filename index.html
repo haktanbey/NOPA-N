@@ -3,324 +3,282 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>#NoPain - nP Zone</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <title>#NoPain</title>
+  
+  <!-- Favicon (kendi hazırladığın .ico veya .png dosyasını buraya koy) -->
+  <link rel="icon" type="np.gif" href="favicon.ico">
+  
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
-      font-family: 'Arial', 'Helvetica', sans-serif;
-      background: linear-gradient(135deg, #0f0f1a 0%, #1a001a 100%);
+      background: #0d0d0d;
       color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
-      background-attachment: fixed;
-      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(180,0,0,0.08) 0%, transparent 25%),
+        radial-gradient(circle at 90% 80%, rgba(180,0,0,0.06) 0%, transparent 35%);
     }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: 
-        radial-gradient(circle at 20% 30%, rgba(255,0,80,0.08) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(180,0,255,0.06) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: -2;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url('np.gif') center/cover no-repeat;
-      opacity: 0.07;
-      mix-blend-mode: overlay;
-      pointer-events: none;
-      z-index: -1;
-    }
-
+    
     .container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 20px 15px;
+      padding: 15px 20px;
     }
-
+    
     header {
-      text-align: center;
-      padding: 60px 0 40px;
-    }
-
-    h1 {
-      font-size: clamp(4rem, 12vw, 9rem);
-      font-weight: 900;
-      letter-spacing: -4px;
-      background: linear-gradient(90deg, #ff0055, #c300ff, #00d4ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 0 40px rgba(255,0,85,0.6), 0 0 80px rgba(195,0,255,0.4);
-    }
-
-    .subtitle {
-      font-size: 1.5rem;
-      color: #ff4d94;
-      margin-top: 10px;
-      letter-spacing: 2px;
-      text-shadow: 0 0 15px rgba(255,77,148,0.7);
-    }
-
-    .gallery {
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin: 40px 0;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid #300000;
+      margin-bottom: 30px;
     }
-
-    .gallery img {
-      width: 320px;
+    
+    .logo {
+      font-size: 3.2rem;
+      font-weight: 900;
+      letter-spacing: -2px;
+      background: linear-gradient(90deg, #ff1a1a, #cc0000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(200,0,0,0.6);
+    }
+    
+    .gif-container {
+      width: 180px;
       height: 180px;
-      object-fit: cover;
+      overflow: hidden;
       border-radius: 12px;
-      border: 3px solid #ff0055;
-      box-shadow: 0 0 25px rgba(255,0,85,0.5),
-                  inset 0 0 15px rgba(0,0,0,0.8);
-      transition: all 0.4s;
+      border: 2px solid #400000;
+      box-shadow: 0 0 25px rgba(180,0,0,0.4);
     }
-
-    .gallery img:hover {
-      transform: scale(1.08) translateY(-10px);
-      box-shadow: 0 0 45px rgba(255,0,85,0.8),
-                  0 20px 40px rgba(0,0,0,0.6);
-      border-color: #00d4ff;
+    
+    .gif-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-
-    .content {
+    
+    .main-content {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 25px;
-      margin: 50px 0;
+      grid-template-columns: 280px 1fr 300px;
+      gap: 35px;
     }
-
-    .card {
-      background: rgba(15, 15, 35, 0.75);
-      backdrop-filter: blur(10px);
-      border: 2px solid #ff005533;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.7),
-                  inset 0 0 20px rgba(255,0,85,0.08);
-      transition: all 0.3s;
+    
+    aside {
+      background: #111;
+      border: 1px solid #2a0000;
+      border-radius: 10px;
+      padding: 20px;
+      height: fit-content;
     }
-
-    .card:hover {
-      border-color: #00d4ff66;
-      transform: translateY(-8px);
-      box-shadow: 0 20px 60px rgba(0,212,255,0.25);
+    
+    h2 {
+      color: #ff3333;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      border-bottom: 1px solid #400000;
+      padding-bottom: 8px;
     }
-
-    .card h2 {
-      color: #ff0055;
-      font-size: 2rem;
-      margin-bottom: 20px;
-      text-shadow: 0 0 15px rgba(255,0,85,0.6);
-      border-bottom: 2px solid #ff005533;
-      padding-bottom: 10px;
-    }
-
-    .card ul {
+    
+    ul.members {
       list-style: none;
     }
-
-    .card li {
-      margin: 12px 0;
-      font-size: 1.1rem;
-      color: #ddd;
+    
+    ul.members li {
+      padding: 10px 12px;
+      margin: 6px 0;
+      background: #1a0000;
+      border-radius: 6px;
+      border-left: 4px solid #800000;
+      transition: all 0.2s;
     }
-
-    .card li strong {
-      color: #00d4ff;
+    
+    ul.members li:hover {
+      background: #220000;
+      border-left-color: #ff1a1a;
+      transform: translateX(5px);
     }
-
-    /* Yeni İletişim Butonları */
-    .contact-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin-top: 30px;
+    
+    .about {
+      background: #0f0f0f;
+      border: 1px solid #300000;
+      border-radius: 10px;
+      padding: 30px;
     }
-
-    .neon-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 32px;
-      font-size: 1.2rem;
-      font-weight: bold;
+    
+    .about p {
+      line-height: 1.7;
+      margin: 15px 0;
+      color: #ccc;
+    }
+    
+    .contact-box {
+      background: #111;
+      border: 1px solid #2a0000;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    
+    .contact-box a {
+      color: #ff4d4d;
       text-decoration: none;
+      display: block;
+      margin: 12px 0;
+    }
+    
+    .contact-box a:hover {
+      color: #ff8080;
+      text-decoration: underline;
+    }
+    
+    .register-section {
+      margin-top: 40px;
+      background: linear-gradient(135deg, #1a0000, #0d0000);
+      border: 2px solid #800000;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 0 30px rgba(180,0,0,0.25);
+    }
+    
+    .register-section h2 {
+      text-align: center;
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 500px;
+      margin: 25px auto;
+    }
+    
+    input, textarea {
+      padding: 14px;
+      border: 1px solid #400000;
+      border-radius: 6px;
+      background: #0a0a0a;
       color: white;
-      border-radius: 50px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
+      font-size: 1rem;
     }
-
-    .neon-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50px;
-      opacity: 0.6;
-      filter: blur(12px);
-      z-index: -1;
-      transition: opacity 0.4s;
+    
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #ff1a1a;
+      box-shadow: 0 0 10px rgba(255,30,30,0.3);
     }
-
-    .neon-btn:hover {
-      transform: translateY(-5px) scale(1.05);
+    
+    button {
+      background: linear-gradient(90deg, #cc0000, #ff1a1a);
+      color: white;
+      border: none;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
-
-    .neon-btn:hover::before {
-      opacity: 1;
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(200,0,0,0.5);
     }
-
-    /* WhatsApp */
-    .whatsapp {
-      background: linear-gradient(135deg, #25D366, #128C7E);
-    }
-
-    .whatsapp::before {
-      background: #25D366;
-    }
-
-    .whatsapp i {
-      font-size: 1.5rem;
-    }
-
-    /* Instagram */
-    .instagram {
-      background: linear-gradient(135deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-    }
-
-    .instagram::before {
-      background: #E1306C; /* ana turuncu-kırmızı ton */
-    }
-
-    .instagram i {
-      font-size: 1.5rem;
-    }
-
+    
     footer {
       text-align: center;
-      padding: 40px 0;
+      margin-top: 60px;
+      padding: 20px;
       color: #555;
       font-size: 0.9rem;
-      border-top: 1px solid #ff005522;
+      border-top: 1px solid #200000;
     }
-
-    @media (max-width: 900px) {
-      .gallery img {
-        width: 280px;
-        height: 160px;
+    
+    @media (max-width: 1100px) {
+      .main-content {
+        grid-template-columns: 1fr;
       }
-      .contact-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-
-    @media (max-width: 600px) {
-      header {
-        padding: 40px 0 30px;
-      }
-      h1 {
-        font-size: 5rem;
-      }
-      .gallery {
-        flex-direction: column;
-        align-items: center;
-      }
-      .gallery img {
-        width: 90%;
-        max-width: 400px;
-        height: auto;
-      }
+      aside { order: 1; }
+      .register-section { order: 2; }
+      .about { order: 3; }
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-
   <header>
-    <h1>#NoPain</h1>
-    <div class="subtitle">Welcome To nP Zone!</div>
+    <div class="logo">NoPain</div>
+    <div class="gif-container">
+      <!-- Buraya kendi animasyonlu GIF'ini koy (sağ üstte) -->
+      <!-- Örnek: Tenor veya Giphy'den indirdiğin bir gif linki -->
+      <img src="np.gif" alt="NoPain GIF">
+      <!-- Alternatif örnek link (kırmızı-siyah tema): 
+      https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjEx... gibi bir link koyabilirsin -->
+    </div>
   </header>
 
-  <div class="gallery">
-    <img src="RESİM1.jpeg" alt="#NoPain 1">
-    <img src="RESİM2.jpeg" alt="#NoPain 2">
-    <img src="RESİM3.jpeg" alt="#NoPain 3">
+  <div class="main-content">
+
+    <!-- SOL - Üyeler -->
+    <aside>
+      <h2>KLÁN ÜYELERİ</h2>
+      <ul class="members">
+        <li>[Kurucu] ~KATR3OS'nP+</li>
+        <li>#Ya[R]amaz'nP+</li>
+        <li>Samurai'nP+</li>
+        <li>#SLOWS3EXX'nP+</li>
+        <li>#bihter'nP+</li>
+        <li>Javeyskal'nP+</li>
+        <li>AidronLE'nP</li>
+        <!-- Buraya gerçek isimleri ekleyeceksin -->
+      </ul>
+    </aside>
+
+    <!-- ORTA - Amaç / Hakkımızda -->
+    <div class="about">
+      <h2>AMAÇ</h2>
+      <p>MTA'da <strong>Turf</strong> ve <strong>Drop</strong> serverlarında en iyisi olmak.</p>
+      <p>Sadece kazanmak değil, aynı zamanda saygı ve korku salmak istiyoruz.</p>
+      <p><strong>NoPain → No Mercy</strong></p>
+      <p>Klanımıza katılan herkes ailemize katılır. Arka çıkmak, korumak ve birlikte yükselmek bizim yolumuz.</p>
+    
+    </div>
+
+    <!-- SAĞ - İletişim -->
+    <aside class="contact-box">
+      <h2>İLETİŞİM</h2>
+      <p><strong>Discord:</strong>k4treos</p>
+      <p><strong>Leader:</strong>~KATR3OS'nP+</p>
+      <a href="https://discord.gg/xxxxxxxx" target="_blank">→ Discord'a Katıl</a>
+      <a href="https://www.instagram.com/nopainmta/" target="_blank">→ Instagram</a>
+      </aside>
+
   </div>
 
-  <div class="content">
-    <div class="card">
-      <h2>KLÁN ÜYELERİ</h2>
-      <ul>
-        <li>~<strong>KATR3OS'nP</strong>+</li>
-        <li>#<strong>[R]Jamaz'nP</strong>+</li>
-        <li><strong>Samurai'nP</strong>+</li>
-        <li>#<strong>SLOWS3EXX'nP</strong></li>
-        <li>#<strong>bhter'nP</strong></li>
-        <li><strong>Javeyskal'nP</strong></li>
-        <li><strong>AidronLE'nP</strong></li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h2>HAKKIMIZDA</h2>
-      <p>Biz #NoPain, MTA sokaklarının en sert, en kararlı ekibiyiz.</p>
-      <p>Acı çekmeden zafer kazanılmaz. Bu yüzden ismimiz #NoPain.</p>
-      <p>Drop, Turf, Free roam... her modda rakiplerimizi ezip geçiyoruz.</p>
-      <p>Klan lideri ben ~<strong>KATR3OS'nP</strong>+ yıllardır bu sahnedeyim.</p>
-      <p>Amacımız: Saygı, azim ve sürekli zirvede kalmak.</p>
-      <p>Acı Zaferde Yok! Aramıza Katılmak ister misin? 🔥</p>
-    </div>
-
-    <div class="card">
-      <h2>İLETİŞİM</h2>
-      <p style="text-align:center; margin-bottom:25px; color:#ff4d94;">
-        Bize ulaşmak için aşağıdaki kanalları kullan!
-      </p>
-      
-      <div class="contact-buttons">
-        <a href="https://wa.me/905xxxxxxxxx" target="_blank" class="neon-btn whatsapp">
-          <i class="fab fa-whatsapp"></i>
-          WhatsApp İletişim
-        </a>
-        
-        <a href="https://www.instagram.com/nopainklan/" target="_blank" class="neon-btn instagram">
-          <i class="fab fa-instagram"></i>
-          Instagram İletişim
-        </a>
-      </div>
-
-      <p style="margin-top:30px; font-size:1.4rem; text-align:center; color:#ff0055; text-shadow:0 0 20px #ff0055;">
-        #NoPain 🔥
-      </p>
-    </div>
+  <!-- Kayıt Ol bölümü -->
+  <div class="register-section">
+    <h2>KLÁNA KATIL</h2>
+    
+    <form action="kayit.php" method="POST">
+      <input type="text" name="nick" placeholder="Oyun Nick'in *" required>
+      <input type="text" name="discord" placeholder="Discord Tag'in (ör: ali#1234)" required>
+      <input type="email" name="email" placeholder="E-posta adresin (bildirim için)" required>
+      <textarea name="mesaj" rows="4" placeholder="Kendinden biraz bahset, neden NoPain olmak istiyorsun?"></textarea>
+      <button type="submit">KAYIT OL →</button>
+    </form>
   </div>
 
   <footer>
-    © 2026 Made By ~KATR3OS'nP+
+    © 2026 NoPain MTA Klanı •
   </footer>
-
 </div>
 
 </body>
