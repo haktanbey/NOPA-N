@@ -1,284 +1,97 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>#NoPain</title>
-  
-  <!-- Favicon (kendi hazırladığın .ico veya .png dosyasını buraya koy) -->
-  <link rel="icon" type="np.gif" href="favicon.ico">
-  
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: #0d0d0d;
-      color: #e0e0e0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
-      background-image: 
-        radial-gradient(circle at 10% 20%, rgba(180,0,0,0.08) 0%, transparent 25%),
-        radial-gradient(circle at 90% 80%, rgba(180,0,0,0.06) 0%, transparent 35%);
-    }
-    
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 15px 20px;
-    }
-    
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 0;
-      border-bottom: 1px solid #300000;
-      margin-bottom: 30px;
-    }
-    
-    .logo {
-      font-size: 3.2rem;
-      font-weight: 900;
-      letter-spacing: -2px;
-      background: linear-gradient(90deg, #ff1a1a, #cc0000);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(200,0,0,0.6);
-    }
-    
-    .gif-container {
-      width: 180px;
-      height: 180px;
-      overflow: hidden;
-      border-radius: 12px;
-      border: 2px solid #400000;
-      box-shadow: 0 0 25px rgba(180,0,0,0.4);
-    }
-    
-    .gif-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .main-content {
-      display: grid;
-      grid-template-columns: 280px 1fr 300px;
-      gap: 35px;
-    }
-    
-    aside {
-      background: #111;
-      border: 1px solid #2a0000;
-      border-radius: 10px;
-      padding: 20px;
-      height: fit-content;
-    }
-    
-    h2 {
-      color: #ff3333;
-      margin-bottom: 15px;
-      font-size: 1.5rem;
-      border-bottom: 1px solid #400000;
-      padding-bottom: 8px;
-    }
-    
-    ul.members {
-      list-style: none;
-    }
-    
-    ul.members li {
-      padding: 10px 12px;
-      margin: 6px 0;
-      background: #1a0000;
-      border-radius: 6px;
-      border-left: 4px solid #800000;
-      transition: all 0.2s;
-    }
-    
-    ul.members li:hover {
-      background: #220000;
-      border-left-color: #ff1a1a;
-      transform: translateX(5px);
-    }
-    
-    .about {
-      background: #0f0f0f;
-      border: 1px solid #300000;
-      border-radius: 10px;
-      padding: 30px;
-    }
-    
-    .about p {
-      line-height: 1.7;
-      margin: 15px 0;
-      color: #ccc;
-    }
-    
-    .contact-box {
-      background: #111;
-      border: 1px solid #2a0000;
-      border-radius: 10px;
-      padding: 20px;
-    }
-    
-    .contact-box a {
-      color: #ff4d4d;
-      text-decoration: none;
-      display: block;
-      margin: 12px 0;
-    }
-    
-    .contact-box a:hover {
-      color: #ff8080;
-      text-decoration: underline;
-    }
-    
-    .register-section {
-      margin-top: 40px;
-      background: linear-gradient(135deg, #1a0000, #0d0000);
-      border: 2px solid #800000;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 0 30px rgba(180,0,0,0.25);
-    }
-    
-    .register-section h2 {
-      text-align: center;
-    }
-    
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      max-width: 500px;
-      margin: 25px auto;
-    }
-    
-    input, textarea {
-      padding: 14px;
-      border: 1px solid #400000;
-      border-radius: 6px;
-      background: #0a0a0a;
-      color: white;
-      font-size: 1rem;
-    }
-    
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: #ff1a1a;
-      box-shadow: 0 0 10px rgba(255,30,30,0.3);
-    }
-    
-    button {
-      background: linear-gradient(90deg, #cc0000, #ff1a1a);
-      color: white;
-      border: none;
-      padding: 16px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(200,0,0,0.5);
-    }
-    
-    footer {
-      text-align: center;
-      margin-top: 60px;
-      padding: 20px;
-      color: #555;
-      font-size: 0.9rem;
-      border-top: 1px solid #200000;
-    }
-    
-    @media (max-width: 1100px) {
-      .main-content {
-        grid-template-columns: 1fr;
-      }
-      aside { order: 1; }
-      .register-section { order: 2; }
-      .about { order: 3; }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>NoPain Clan</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    color: red;
+    font-family: Arial, sans-serif;
+}
+
+/* Üst bar */
+.header {
+    width: 100%;
+    height: 100px;
+    position: relative;
+}
+
+/* Sağ üst GIF */
+.gif {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.gif img {
+    width: 120px;
+    border: 2px solid red;
+}
+
+/* Sol oyuncu paneli */
+.sidebar {
+    position: absolute;
+    left: 0;
+    top: 100px;
+    width: 250px;
+    height: calc(100vh - 100px);
+    background: #0a0a0a;
+    border-right: 2px solid red;
+    padding: 10px;
+}
+
+/* Oyuncu isimleri */
+.player {
+    margin: 10px 0;
+    padding: 5px;
+    border-bottom: 1px solid red;
+    transition: 0.3s;
+}
+
+.player:hover {
+    color: white;
+    text-shadow: 0 0 10px red;
+}
+
+/* Ana alan */
+.main {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+/* Başlık */
+.title {
+    font-size: 40px;
+    text-shadow: 0 0 20px red;
+}
+</style>
+
 </head>
 <body>
 
-<div class="container">
-  <header>
-    <div class="logo">NoPain</div>
-    <div class="gif-container">
-      <!-- Buraya kendi animasyonlu GIF'ini koy (sağ üstte) -->
-      <!-- Örnek: Tenor veya Giphy'den indirdiğin bir gif linki -->
-      <img src="np.gif" alt="NoPain GIF">
-      <!-- Alternatif örnek link (kırmızı-siyah tema): 
-      https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjEx... gibi bir link koyabilirsin -->
+<div class="header">
+    <div class="gif">
+        <!-- BURAYA GIF LINKİ KOY -->
+        <img src="https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif">
     </div>
-  </header>
+</div>
 
-  <div class="main-content">
+<div class="sidebar">
+    <div class="player">~KATR3OS'nP+</div>
+    <div class="player">#Ya[R]Jamaz'nP+</div>
+    <div class="player">Samurai'nP+</div>
+    <div class="player">#SLOWS3EXX'nP+</div>
+    <div class="player">#bihter'nP+</div>
+    <div class="player">Javeyskal'nP+</div>
+    <div class="player">AidronLE'nP+</div>
+</div>
 
-    <!-- SOL - Üyeler -->
-    <aside>
-      <h2>KLÁN ÜYELERİ</h2>
-      <ul class="members">
-        <li>[Kurucu] ~KATR3OS'nP+</li>
-        <li>#Ya[R]amaz'nP+</li>
-        <li>Samurai'nP+</li>
-        <li>#SLOWS3EXX'nP+</li>
-        <li>#bihter'nP+</li>
-        <li>Javeyskal'nP+</li>
-        <li>AidronLE'nP</li>
-        <!-- Buraya gerçek isimleri ekleyeceksin -->
-      </ul>
-    </aside>
-
-    <!-- ORTA - Amaç / Hakkımızda -->
-    <div class="about">
-      <h2>AMAÇ</h2>
-      <p>MTA'da <strong>Turf</strong> ve <strong>Drop</strong> serverlarında en iyisi olmak.</p>
-      <p>Sadece kazanmak değil, aynı zamanda saygı ve korku salmak istiyoruz.</p>
-      <p><strong>NoPain → No Mercy</strong></p>
-      <p>Klanımıza katılan herkes ailemize katılır. Arka çıkmak, korumak ve birlikte yükselmek bizim yolumuz.</p>
-    
-    </div>
-
-    <!-- SAĞ - İletişim -->
-    <aside class="contact-box">
-      <h2>İLETİŞİM</h2>
-      <p><strong>Discord:</strong>k4treos</p>
-      <p><strong>Leader:</strong>~KATR3OS'nP+</p>
-      <a href="https://discord.gg/xxxxxxxx" target="_blank">→ Discord'a Katıl</a>
-      <a href="https://www.instagram.com/nopainmta/" target="_blank">→ Instagram</a>
-      </aside>
-
-  </div>
-
-  <!-- Kayıt Ol bölümü -->
-  <div class="register-section">
-    <h2>KLÁNA KATIL</h2>
-    
-    <form action="kayit.php" method="POST">
-      <input type="text" name="nick" placeholder="Oyun Nick'in *" required>
-      <input type="text" name="discord" placeholder="Discord Tag'in (ör: ali#1234)" required>
-      <input type="email" name="email" placeholder="E-posta adresin (bildirim için)" required>
-      <textarea name="mesaj" rows="4" placeholder="Kendinden biraz bahset, neden NoPain olmak istiyorsun?"></textarea>
-      <button type="submit">KAYIT OL →</button>
-    </form>
-  </div>
-
-  <footer>
-    © 2026 NoPain MTA Klanı •
-  </footer>
+<div class="main">
+    <div class="title">NoPain Clan</div>
+    <p>Fear the pain. Respect the power.</p>
 </div>
 
 </body>
