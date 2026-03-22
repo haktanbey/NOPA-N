@@ -2,400 +2,346 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Block Blast Klon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Uzaylı Parti • Giriş / Kayıt</title>
   <style>
+    :root {
+      --bg: #0d001a;
+      --neon: #00ffea;
+      --neon2: #ff00aa;
+      --danger: #ff3366;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      background: #1a1a2e;
-      color: #e0e0e0;
-      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      background: var(--bg);
+      color: white;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      overflow: hidden;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(0,255,234,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,0,170,0.08) 0%, transparent 50%);
+    }
+
+    /* Yıldızlar & gezegenler */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: transparent;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 4s infinite alternate;
+    }
+    @keyframes twinkle { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
+
+    .planet {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, white 5%, transparent 60%);
+      box-shadow: 0 0 60px var(--neon);
+      animation: rotatePlanet 120s linear infinite;
+    }
+    @keyframes rotatePlanet { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .container {
+      position: relative;
+      min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      touch-action: manipulation;
-      overflow: hidden;
+      padding: 20px;
     }
-    #game-container {
-      position: relative;
-      width: 90vmin;
-      height: 90vmin;
-      max-width: 500px;
-      max-height: 500px;
-    }
-    canvas {
+
+    .form-box {
+      background: rgba(20, 0, 40, 0.6);
+      backdrop-filter: blur(12px);
+      border: 2px solid var(--neon);
+      border-radius: 24px;
+      padding: 40px 30px;
       width: 100%;
-      height: 100%;
-      background: #16213e;
-      border: 4px solid #0f3460;
-      border-radius: 12px;
-      box-shadow: 0 0 30px rgba(0,255,255,0.2);
+      max-width: 420px;
+      box-shadow: 0 0 80px rgba(0,255,234,0.4),
+                  inset 0 0 30px rgba(0,255,234,0.15);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
     }
-    #ui {
+
+    .form-box.shake {
+      animation: shake 0.5s;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-12px); }
+      50% { transform: translateX(12px); }
+      75% { transform: translateX(-8px); }
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--neon), var(--neon2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 20px rgba(0,255,234,0.7);
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #aaa;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px 20px 16px 50px;
+      border: 2px solid rgba(0,255,234,0.3);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--neon);
+      box-shadow: 0 0 20px rgba(0,255,234,0.5);
+    }
+
+    .icon {
       position: absolute;
-      top: 10px; left: 10px; right: 10px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 6vw;
-      font-weight: bold;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.4rem;
+      color: var(--neon);
       pointer-events: none;
     }
-    #next-pieces {
-      position: absolute;
-      bottom: 10px; left: 10px; right: 10px;
-      height: 15%;
-      display: flex;
-      justify-content: space-around;
-      pointer-events: all;
-    }
-    .piece-preview {
-      width: 30%;
-      height: 100%;
-      background: rgba(255,255,255,0.08);
-      border: 2px dashed #00ffff;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    #start-screen, #game-over {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 8vw;
-      text-align: center;
-      pointer-events: all;
-    }
+
     button {
-      margin-top: 20px;
-      padding: 15px 50px;
-      font-size: 7vw;
-      background: #00d4ff;
+      width: 100%;
+      padding: 16px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, var(--neon), #00c8ff);
+      color: black;
       border: none;
       border-radius: 12px;
-      color: #000;
-      font-weight: bold;
       cursor: pointer;
+      transition: all 0.4s;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 10px 30px rgba(0,255,234,0.4);
     }
-    button:hover { background: #00ffff; }
+
+    button:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 20px 50px rgba(0,255,234,0.6);
+    }
+
+    .toggle {
+      text-align: center;
+      margin-top: 24px;
+      color: #aaa;
+    }
+
+    .toggle a {
+      color: var(--neon);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .toggle a:hover { text-decoration: underline; }
+
+    /* Konfeti patlaması */
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .particle {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+    }
   </style>
 </head>
 <body>
 
-<div id="game-container">
-  <canvas id="c"></canvas>
-  <div id="ui">
-    <div>Skor: <span id="score">0</span></div>
-    <div>Combo: <span id="combo">0</span>x</div>
-  </div>
-  <div id="next-pieces">
-    <div class="piece-preview" id="p1"></div>
-    <div class="piece-preview" id="p2"></div>
-    <div class="piece-preview" id="p3"></div>
-  </div>
+<div class="stars" id="stars"></div>
 
-  <div id="start-screen">
-    <h1>Block Blast</h1>
-    <p>3 blok yerleştir, satır/sütun doldur → temizle!</p>
-    <button onclick="startGame()">BAŞLA</button>
-  </div>
+<div class="container">
+  <div class="form-box" id="formBox">
 
-  <div id="game-over" style="display:none">
-    <h1>Game Over</h1>
-    <p>Skor: <span id="final-score">0</span></p>
-    <button onclick="resetGame()">Tekrar Oyna</button>
+    <h1 id="formTitle">UZAYLI PARTİ</h1>
+    <p class="subtitle" id="subtitle">Galaksiye hoş geldin kaçkın!</p>
+
+    <form id="authForm">
+
+      <div class="input-group">
+        <span class="icon">👽</span>
+        <input type="text" id="username" placeholder="Uzaylı Kod Adın" required autocomplete="off">
+      </div>
+
+      <div class="input-group">
+        <span class="icon">🔒</span>
+        <input type="password" id="password" placeholder="Gizli Frekans" required>
+      </div>
+
+      <button type="submit" id="submitBtn">IŞINLAN →</button>
+    </form>
+
+    <div class="toggle">
+      <span id="toggleText">Zaten uzaylı mısın?</span>
+      <a href="#" id="toggleLink">Diğer tarafa ışınlan</a>
+    </div>
+
   </div>
 </div>
 
+<div class="confetti" id="confetti"></div>
+
 <script>
-// ================ AYARLAR ================
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
-const scoreEl = document.getElementById('score');
-const comboEl = document.getElementById('combo');
-const startScreen = document.getElementById('start-screen');
-const gameOverScreen = document.getElementById('game-over');
-const finalScoreEl = document.getElementById('final-score');
+// ★★★ Yıldızlar & Gezegenler ★★★
+const starsContainer = document.getElementById('stars');
+for(let i = 0; i < 180; i++){
+  const star = document.createElement('div');
+  star.className = 'star';
+  star.style.width = star.style.height = Math.random()*3 + 'px';
+  star.style.left = Math.random()*100 + '%';
+  star.style.top = Math.random()*100 + '%';
+  star.style.animationDelay = Math.random()*4 + 's';
+  starsContainer.appendChild(star);
+}
 
-let cw = canvas.width = 400;
-let ch = canvas.height = 400;
-let gridSize = 8;
-let cell = cw / gridSize;
-let grid = Array(gridSize).fill().map(() => Array(gridSize).fill(0));
-
-let currentPieces = [];
-let selectedPiece = null;
-let score = 0;
-let combo = 0;
-let gameRunning = false;
-
-// Renkler (farklı şekiller için)
-const colors = ['#ff3366', '#33ff99', '#3366ff', '#ffcc33', '#cc33ff', '#33ffff'];
-
-// Tüm olası tetromino benzeri şekiller (dönüşsüz, Block Blast gibi)
-const shapes = [
-  [[1]],                     // tek
-  [[1,1]],                   // 1x2
-  [[1],[1]],                 // 2x1
-  [[1,1,1]],                 // 1x3
-  [[1],[1],[1]],             // 3x1
-  [[1,1],[1,0]],             // L küçük
-  [[1,1],[0,1]],
-  [[1,0],[1,1]],
-  [[0,1],[1,1]],
-  [[1,1,1],[0,1,0]],         // T
-  [[1,1,1],[1,0,0]],         // L
-  [[1,1,1],[0,0,1]],
-  [[0,1,0],[1,1,1]],
-  [[1,0,0],[1,1,1]],
-  [[1,1],[1,1]],             // kare 2x2
-  [[1,1,1,1]],               // 1x4
-  [[1],[1],[1],[1]],         // 4x1
-  [[1,1,1],[1,1,1]],         // 2x3 dikdörtgen vs.
-  [[1,1],[1,1],[1,1]]
+const planets = [
+  {size:120, left:'10%', top:'15%', color:'var(--neon)'},
+  {size:80,  left:'75%', top:'65%', color:'var(--neon2)'},
 ];
-
-// Yeni 3 parça üret
-function generatePieces() {
-  currentPieces = [];
-  for (let i = 0; i < 3; i++) {
-    let shape = shapes[Math.floor(Math.random() * shapes.length)];
-    let color = colors[Math.floor(Math.random() * colors.length)];
-    currentPieces.push({ shape, color, placed: false });
-  }
-  drawNextPieces();
-}
-
-function drawNextPieces() {
-  const previews = [document.getElementById('p1'), document.getElementById('p2'), document.getElementById('p3')];
-  previews.forEach((el, i) => {
-    if (!currentPieces[i] || currentPieces[i].placed) {
-      el.innerHTML = '';
-      return;
-    }
-    let miniCanvas = document.createElement('canvas');
-    let s = currentPieces[i].shape;
-    let w = s[0].length * 20;
-    let h = s.length * 20;
-    miniCanvas.width = w + 40;
-    miniCanvas.height = h + 40;
-    let mctx = miniCanvas.getContext('2d');
-    mctx.fillStyle = currentPieces[i].color;
-    for (let y = 0; y < s.length; y++) {
-      for (let x = 0; x < s[y].length; x++) {
-        if (s[y][x]) {
-          mctx.fillRect(20 + x*20, 20 + y*20, 18, 18);
-        }
-      }
-    }
-    el.innerHTML = '';
-    el.appendChild(miniCanvas);
-  });
-}
-
-// Grid çiz + bloklar
-function draw() {
-  ctx.clearRect(0,0,cw,ch);
-
-  // Izgara çizgileri
-  ctx.strokeStyle = '#0f3460';
-  for (let i = 0; i <= gridSize; i++) {
-    ctx.beginPath();
-    ctx.moveTo(i*cell, 0);
-    ctx.lineTo(i*cell, ch);
-    ctx.moveTo(0, i*cell);
-    ctx.lineTo(cw, i*cell);
-    ctx.stroke();
-  }
-
-  // Yerleştirilmiş bloklar
-  for (let y = 0; y < gridSize; y++) {
-    for (let x = 0; x < gridSize; x++) {
-      if (grid[y][x]) {
-        ctx.fillStyle = grid[y][x];
-        ctx.fillRect(x*cell + 2, y*cell + 2, cell-4, cell-4);
-      }
-    }
-  }
-
-  // Seçili parça hover efekti
-  if (selectedPiece) {
-    let mx = mouse.x - canvas.offsetLeft;
-    let my = mouse.y - canvas.offsetTop;
-    let gx = Math.floor(mx / cell);
-    let gy = Math.floor(my / cell);
-
-    if (canPlace(selectedPiece.shape, gx, gy)) {
-      ctx.globalAlpha = 0.4;
-      ctx.fillStyle = selectedPiece.color;
-      for (let py = 0; py < selectedPiece.shape.length; py++) {
-        for (let px = 0; px < selectedPiece.shape[py].length; px++) {
-          if (selectedPiece.shape[py][px]) {
-            ctx.fillRect((gx+px)*cell + 2, (gy+py)*cell + 2, cell-4, cell-4);
-          }
-        }
-      }
-      ctx.globalAlpha = 1;
-    }
-  }
-}
-
-// Yerleştirilebilir mi?
-function canPlace(shape, gx, gy) {
-  if (gx < 0 || gy < 0) return false;
-  for (let py = 0; py < shape.length; py++) {
-    for (let px = 0; px < shape[py].length; px++) {
-      if (shape[py][px]) {
-        let nx = gx + px;
-        let ny = gy + py;
-        if (nx >= gridSize || ny >= gridSize || grid[ny][nx]) {
-          return false;
-        }
-      }
-    }
-  }
-  return true;
-}
-
-// Yerleştir
-function place(shape, gx, gy, color) {
-  for (let py = 0; py < shape.length; py++) {
-    for (let px = 0; px < shape[py].length; px++) {
-      if (shape[py][px]) {
-        grid[gy + py][gx + px] = color;
-      }
-    }
-  }
-  checkLines();
-}
-
-// Satır/sütun temizle + combo
-function checkLines() {
-  let cleared = 0;
-
-  // Satırlar
-  for (let y = 0; y < gridSize; y++) {
-    if (grid[y].every(cell => cell !== 0)) {
-      grid[y].fill(0);
-      cleared++;
-    }
-  }
-
-  // Sütunlar
-  for (let x = 0; x < gridSize; x++) {
-    let full = true;
-    for (let y = 0; y < gridSize; y++) {
-      if (grid[y][x] === 0) { full = false; break; }
-    }
-    if (full) {
-      for (let y = 0; y < gridSize; y++) grid[y][x] = 0;
-      cleared++;
-    }
-  }
-
-  if (cleared > 0) {
-    combo++;
-    let points = cleared * 10 * combo;
-    score += points;
-    scoreEl.textContent = score;
-    comboEl.textContent = combo;
-  } else {
-    combo = 0;
-    comboEl.textContent = 0;
-  }
-
-  // Tüm blokları temizlediysen ekstra bonus (isteğe göre)
-  if (grid.flat().every(c => c === 0)) score += 200;
-}
-
-// Oyun bitti mi?
-function gameOverCheck() {
-  for (let piece of currentPieces) {
-    if (piece.placed) continue;
-    for (let y = 0; y < gridSize; y++) {
-      for (let x = 0; x < gridSize; x++) {
-        if (canPlace(piece.shape, x, y)) return false;
-      }
-    }
-  }
-  gameRunning = false;
-  finalScoreEl.textContent = score;
-  gameOverScreen.style.display = 'flex';
-}
-
-// Fare/dokunmatik takip
-let mouse = { x: 0, y: 0 };
-canvas.addEventListener('mousemove', e => {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
+planets.forEach(p => {
+  const planet = document.createElement('div');
+  planet.className = 'planet';
+  planet.style.width = planet.style.height = p.size + 'px';
+  planet.style.left = p.left;
+  planet.style.top = p.top;
+  planet.style.background = `radial-gradient(circle at 30% 30%, white 5%, ${p.color} 40%, transparent 70%)`;
+  planet.style.boxShadow = `0 0 ${p.size/2}px ${p.color}`;
+  starsContainer.appendChild(planet);
 });
-canvas.addEventListener('touchmove', e => {
+
+// ★★★ Form Mantığı ★★★
+const form = document.getElementById('authForm');
+const title = document.getElementById('formTitle');
+const subtitle = document.getElementById('subtitle');
+const toggleText = document.getElementById('toggleText');
+const toggleLink = document.getElementById('toggleLink');
+const submitBtn = document.getElementById('submitBtn');
+const formBox = document.getElementById('formBox');
+
+let isLogin = true;
+
+toggleLink.addEventListener('click', e => {
   e.preventDefault();
-  mouse.x = e.touches[0].clientX;
-  mouse.y = e.touches[0].clientY;
-});
+  isLogin = !isLogin;
 
-// Tıklama / dokunma ile yerleştir
-canvas.addEventListener('click', e => {
-  if (!gameRunning || !selectedPiece) return;
-  let mx = mouse.x - canvas.offsetLeft;
-  let my = mouse.y - canvas.offsetTop;
-  let gx = Math.floor(mx / cell);
-  let gy = Math.floor(my / cell);
-
-  if (canPlace(selectedPiece.shape, gx, gy)) {
-    place(selectedPiece.shape, gx, gy, selectedPiece.color);
-    selectedPiece.placed = true;
-    selectedPiece = null;
-    draw();
-
-    // Tüm parçalar yerleştirildiyse yeni set
-    if (currentPieces.every(p => p.placed)) {
-      generatePieces();
-    }
-    gameOverCheck();
+  if(isLogin){
+    title.textContent = "UZAYLI PARTİ";
+    subtitle.textContent = "Galaksiye hoş geldin kaçkın!";
+    submitBtn.textContent = "IŞINLAN →";
+    toggleText.textContent = "Zaten uzaylı mısın?";
+    toggleLink.textContent = "Diğer tarafa ışınlan";
+  } else {
+    title.textContent = "YENİ UZAYLI KAYIT";
+    subtitle.textContent = "Kimliğini sisteme yükle!";
+    submitBtn.textContent = "KAYIT OL → TELEPATİK";
+    toggleText.textContent = "Daha önce ışınlandın mı?";
+    toggleLink.textContent = "Giriş yapayım o zaman";
   }
 });
 
-// Parça seç (önizleme tıklama)
-document.querySelectorAll('.piece-preview').forEach((el, i) => {
-  el.addEventListener('click', () => {
-    if (currentPieces[i] && !currentPieces[i].placed) {
-      selectedPiece = currentPieces[i];
-    }
-  });
+form.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value;
+
+  if(!user || pass.length < 3){
+    formBox.classList.add('shake');
+    setTimeout(()=>formBox.classList.remove('shake'), 600);
+    subtitle.textContent = "Frekansta hata var! Tekrar dene 👾";
+    setTimeout(()=> subtitle.textContent = isLogin ? "Galaksiye hoş geldin kaçkın!" : "Kimliğini sisteme yükle!", 2000);
+    return;
+  }
+
+  // Sahte başarılı giriş (eğlence için)
+  if(isLogin){
+    subtitle.textContent = `Hoş geldin ${user.toUpperCase()}! Parti başlasın! 🪐`;
+    launchConfetti();
+    setTimeout(()=> alert(`Işınlanma başarılı!\nHoş geldin ${user}!\n\n(gerçek hayatta backend lazım tabii 😏)`), 1800);
+  } else {
+    subtitle.textContent = `${user} sisteme kaydedildi! Artık resmi uzay kaçkınısın! 🚀`;
+    launchConfetti(120);
+    setTimeout(()=> {
+      isLogin = true;
+      toggleLink.click();
+      subtitle.textContent = "Şimdi giriş yap bakalım yeni uzaylı!";
+    }, 2800);
+  }
 });
 
-// Oyun döngüsü
-function loop() {
-  draw();
-  requestAnimationFrame(loop);
-}
+// Şifre alanına komik emoji efekti
+document.getElementById('password').addEventListener('input', e => {
+  const val = e.target.value;
+  if(val.length > 0){
+    e.target.setAttribute('type','text');
+    e.target.value = '👾'.repeat(Math.min(val.length, 8)) + (val.length>8 ? '...' : '');
+    setTimeout(()=> {
+      e.target.setAttribute('type','password');
+      e.target.value = val;
+    }, 400);
+  }
+});
 
-// Başlat
-function startGame() {
-  startScreen.style.display = 'none';
-  gameOverScreen.style.display = 'none';
-  grid = Array(gridSize).fill().map(() => Array(gridSize).fill(0));
-  score = 0;
-  combo = 0;
-  scoreEl.textContent = 0;
-  comboEl.textContent = 0;
-  generatePieces();
-  selectedPiece = null;
-  gameRunning = true;
-}
+// Konfeti patlatma fonksiyonu
+function launchConfetti(count = 80) {
+  const confetti = document.getElementById('confetti');
+  const colors = ['#00ffea','#ff00aa','#ffff00','#ff3366','#00ff88'];
 
-function resetGame() {
-  startGame();
-}
+  for(let i = 0; i < count; i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDuration = (Math.random()*2 + 2) + 's';
+    p.style.animationDelay = Math.random()*0.5 + 's';
+    confetti.appendChild(p);
 
-loop();
+    setTimeout(()=> p.remove(), 5000);
+  }
+}
 </script>
 </body>
 </html>
