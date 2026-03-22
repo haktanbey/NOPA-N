@@ -3,345 +3,168 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Uzaylı Parti • Giriş / Kayıt</title>
+  <title>Bir AI • 2026 Edition</title>
   <style>
-    :root {
-      --bg: #0d001a;
-      --neon: #00ffea;
-      --neon2: #ff00aa;
-      --danger: #ff3366;
-    }
-
-    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      min-height: 100vh;
-      background: var(--bg);
-      color: white;
+      background: linear-gradient(135deg, #1a0033, #000d1a);
+      color: #e0e0ff;
       font-family: 'Segoe UI', system-ui, sans-serif;
-      overflow: hidden;
-      background-image: 
-        radial-gradient(circle at 20% 30%, rgba(0,255,234,0.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(255,0,170,0.08) 0%, transparent 50%);
-    }
-
-    /* Yıldızlar & gezegenler */
-    .stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background: transparent;
-    }
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 4s infinite alternate;
-    }
-    @keyframes twinkle { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
-
-    .planet {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, white 5%, transparent 60%);
-      box-shadow: 0 0 60px var(--neon);
-      animation: rotatePlanet 120s linear infinite;
-    }
-    @keyframes rotatePlanet { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-    .container {
-      position: relative;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      margin: 0;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-
-    .form-box {
-      background: rgba(20, 0, 40, 0.6);
-      backdrop-filter: blur(12px);
-      border: 2px solid var(--neon);
-      border-radius: 24px;
-      padding: 40px 30px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 0 80px rgba(0,255,234,0.4),
-                  inset 0 0 30px rgba(0,255,234,0.15);
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s;
-    }
-
-    .form-box.shake {
-      animation: shake 0.5s;
-    }
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      25% { transform: translateX(-12px); }
-      50% { transform: translateX(12px); }
-      75% { transform: translateX(-8px); }
-    }
-
     h1 {
-      text-align: center;
-      font-size: 2.6rem;
-      margin-bottom: 10px;
-      background: linear-gradient(90deg, var(--neon), var(--neon2));
+      font-size: 3rem;
+      margin: 20px 0;
+      background: linear-gradient(90deg, #ff00cc, #00ffff);
       -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 0 20px rgba(0,255,234,0.7);
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(0,255,255,0.5);
     }
-
-    .subtitle {
-      text-align: center;
-      color: #aaa;
-      margin-bottom: 30px;
-      font-size: 1.1rem;
-    }
-
-    .input-group {
-      position: relative;
-      margin-bottom: 24px;
-    }
-
-    input {
+    .container {
+      background: rgba(20, 20, 60, 0.6);
+      backdrop-filter: blur(10px);
+      border: 2px solid #00ffff44;
+      border-radius: 20px;
+      padding: 30px;
       width: 100%;
-      padding: 16px 20px 16px 50px;
-      border: 2px solid rgba(0,255,234,0.3);
+      max-width: 600px;
+      box-shadow: 0 10px 40px rgba(0,255,255,0.2);
+    }
+    textarea, input {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
       border-radius: 12px;
+      border: 2px solid #00ffff44;
       background: rgba(255,255,255,0.05);
       color: white;
       font-size: 1.1rem;
-      transition: all 0.3s;
+      resize: none;
     }
-
-    input:focus {
+    textarea:focus, input:focus {
       outline: none;
-      border-color: var(--neon);
-      box-shadow: 0 0 20px rgba(0,255,234,0.5);
+      border-color: #00ffff;
+      box-shadow: 0 0 15px #00ffff66;
     }
-
-    .icon {
-      position: absolute;
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.4rem;
-      color: var(--neon);
-      pointer-events: none;
-    }
-
     button {
-      width: 100%;
-      padding: 16px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      background: linear-gradient(45deg, var(--neon), #00c8ff);
+      background: linear-gradient(45deg, #ff00cc, #00ffff);
       color: black;
       border: none;
+      padding: 16px 32px;
+      font-size: 1.3rem;
+      font-weight: bold;
       border-radius: 12px;
       cursor: pointer;
-      transition: all 0.4s;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      box-shadow: 0 10px 30px rgba(0,255,234,0.4);
+      margin: 15px auto;
+      display: block;
+      transition: all 0.3s;
     }
-
     button:hover {
-      transform: translateY(-4px) scale(1.04);
-      box-shadow: 0 20px 50px rgba(0,255,234,0.6);
+      transform: scale(1.08);
+      box-shadow: 0 0 30px #00ffffaa;
     }
-
-    .toggle {
+    #answer {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 16px;
+      min-height: 120px;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      border-left: 5px solid #ff00cc;
+    }
+    .emoji {
+      font-size: 2.5rem;
+      margin: 10px 0;
+      display: block;
       text-align: center;
-      margin-top: 24px;
-      color: #aaa;
-    }
-
-    .toggle a {
-      color: var(--neon);
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .toggle a:hover { text-decoration: underline; }
-
-    /* Konfeti patlaması */
-    .confetti {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    .particle {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: fall 3s linear forwards;
-    }
-
-    @keyframes fall {
-      to { transform: translateY(120vh) rotate(720deg); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
-<div class="stars" id="stars"></div>
+<h1>KAÇIK FALCI AI</h1>
+<div class="emoji">🪬👽🔮</div>
 
 <div class="container">
-  <div class="form-box" id="formBox">
+  <input type="text" id="name" placeholder="Adın ne lan? (isteğe bağlı)" />
 
-    <h1 id="formTitle">UZAYLI PARTİ</h1>
-    <p class="subtitle" id="subtitle">Galaksiye hoş geldin kaçkın!</p>
+  <textarea id="question" rows="3" placeholder="Sor bakalım kaderine ne yazmışım... (aşk, para, iş, ex'in döner mi vs.)"></textarea>
 
-    <form id="authForm">
+  <button onclick="falBak()">Falı Aç →</button>
 
-      <div class="input-group">
-        <span class="icon">👽</span>
-        <input type="text" id="username" placeholder="Uzaylı Kod Adın" required autocomplete="off">
-      </div>
-
-      <div class="input-group">
-        <span class="icon">🔒</span>
-        <input type="password" id="password" placeholder="Gizli Frekans" required>
-      </div>
-
-      <button type="submit" id="submitBtn">IŞINLAN →</button>
-    </form>
-
-    <div class="toggle">
-      <span id="toggleText">Zaten uzaylı mısın?</span>
-      <a href="#" id="toggleLink">Diğer tarafa ışınlan</a>
-    </div>
-
-  </div>
+  <div id="answer"></div>
 </div>
 
-<div class="confetti" id="confetti"></div>
-
 <script>
-// ★★★ Yıldızlar & Gezegenler ★★★
-const starsContainer = document.getElementById('stars');
-for(let i = 0; i < 180; i++){
-  const star = document.createElement('div');
-  star.className = 'star';
-  star.style.width = star.style.height = Math.random()*3 + 'px';
-  star.style.left = Math.random()*100 + '%';
-  star.style.top = Math.random()*100 + '%';
-  star.style.animationDelay = Math.random()*4 + 's';
-  starsContainer.appendChild(star);
+// Kaçık Falcı'nın deli kişiliği
+const sacmaYuzdeler = [0, 20, 35, 50, 65, 80]; // % kaç ihtimalle saçmalasın
+const sacmaMod = sacmaYuzdeler[Math.floor(Math.random() * sacmaYuzdeler.length)];
+
+const olumluSifatlar = ["epik", "manyak", "efsane", "patlayıcı", "kral", "kraliçe", "uzay boşluğunda parlayan yıldız"];
+const olumsuzSifatlar = ["faciası", "rezalet", "epik fail", "utanç kaynağı", "lanetli", "zombi modu"];
+const emojiSetleri = ["🔥🚀", "💀😂", "🤑👽", "😭🤡", "🌌🪐", "⚡🐸"];
+
+function rastgeleSec(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
-const planets = [
-  {size:120, left:'10%', top:'15%', color:'var(--neon)'},
-  {size:80,  left:'75%', top:'65%', color:'var(--neon2)'},
-];
-planets.forEach(p => {
-  const planet = document.createElement('div');
-  planet.className = 'planet';
-  planet.style.width = planet.style.height = p.size + 'px';
-  planet.style.left = p.left;
-  planet.style.top = p.top;
-  planet.style.background = `radial-gradient(circle at 30% 30%, white 5%, ${p.color} 40%, transparent 70%)`;
-  planet.style.boxShadow = `0 0 ${p.size/2}px ${p.color}`;
-  starsContainer.appendChild(planet);
-});
+function falBak() {
+  const isim = document.getElementById("name").value.trim() || "kanka";
+  const soru = document.getElementById("question").value.trim().toLowerCase();
+  const cevapAlani = document.getElementById("answer");
 
-// ★★★ Form Mantığı ★★★
-const form = document.getElementById('authForm');
-const title = document.getElementById('formTitle');
-const subtitle = document.getElementById('subtitle');
-const toggleText = document.getElementById('toggleText');
-const toggleLink = document.getElementById('toggleLink');
-const submitBtn = document.getElementById('submitBtn');
-const formBox = document.getElementById('formBox');
-
-let isLogin = true;
-
-toggleLink.addEventListener('click', e => {
-  e.preventDefault();
-  isLogin = !isLogin;
-
-  if(isLogin){
-    title.textContent = "UZAYLI PARTİ";
-    subtitle.textContent = "Galaksiye hoş geldin kaçkın!";
-    submitBtn.textContent = "IŞINLAN →";
-    toggleText.textContent = "Zaten uzaylı mısın?";
-    toggleLink.textContent = "Diğer tarafa ışınlan";
-  } else {
-    title.textContent = "YENİ UZAYLI KAYIT";
-    subtitle.textContent = "Kimliğini sisteme yükle!";
-    submitBtn.textContent = "KAYIT OL → TELEPATİK";
-    toggleText.textContent = "Daha önce ışınlandın mı?";
-    toggleLink.textContent = "Giriş yapayım o zaman";
-  }
-});
-
-form.addEventListener('submit', e => {
-  e.preventDefault();
-
-  const user = document.getElementById('username').value.trim();
-  const pass = document.getElementById('password').value;
-
-  if(!user || pass.length < 3){
-    formBox.classList.add('shake');
-    setTimeout(()=>formBox.classList.remove('shake'), 600);
-    subtitle.textContent = "Frekansta hata var! Tekrar dene 👾";
-    setTimeout(()=> subtitle.textContent = isLogin ? "Galaksiye hoş geldin kaçkın!" : "Kimliğini sisteme yükle!", 2000);
+  if (!soru) {
+    cevapAlani.innerHTML = "Lan bi soru sor da fal bakayım, boş boş bakmıyorum burda 👾";
     return;
   }
 
-  // Sahte başarılı giriş (eğlence için)
-  if(isLogin){
-    subtitle.textContent = `Hoş geldin ${user.toUpperCase()}! Parti başlasın! 🪐`;
-    launchConfetti();
-    setTimeout(()=> alert(`Işınlanma başarılı!\nHoş geldin ${user}!\n\n(gerçek hayatta backend lazım tabii 😏)`), 1800);
-  } else {
-    subtitle.textContent = `${user} sisteme kaydedildi! Artık resmi uzay kaçkınısın! 🚀`;
-    launchConfetti(120);
-    setTimeout(()=> {
-      isLogin = true;
-      toggleLink.click();
-      subtitle.textContent = "Şimdi giriş yap bakalım yeni uzaylı!";
-    }, 2800);
+  let cevap = "";
+  const trollemeIhtimali = Math.random() * 100;
+
+  // Soruya göre biraz akıllıca davranmaya çalışalım (çok basit regex ile)
+  if (soru.includes("aşk") || soru.includes("sevgili") || soru.includes("ex") || soru.includes("kız") || soru.includes("erkek")) {
+    if (trollemeIhtimali < sacmaMod) {
+      cevap = `${isim.toUpperCase()}, aşk hayatın tam bir ${rastgeleSec(olumsuzSifatlar)}. Ex'in dönecek ama sen yine aynı hatayı yapacaksın 😂`;
+    } else {
+      cevap = `Aşk konusunda ${rastgeleSec(olumluSifatlar)} olacaksın ${isim}! Yeni biri geliyor, ama sakın hemen "seni seviyorum" deme, rezil olursun 🫶`;
+    }
   }
-});
-
-// Şifre alanına komik emoji efekti
-document.getElementById('password').addEventListener('input', e => {
-  const val = e.target.value;
-  if(val.length > 0){
-    e.target.setAttribute('type','text');
-    e.target.value = '👾'.repeat(Math.min(val.length, 8)) + (val.length>8 ? '...' : '');
-    setTimeout(()=> {
-      e.target.setAttribute('type','password');
-      e.target.value = val;
-    }, 400);
+  else if (soru.includes("para") || soru.includes("para") || soru.includes("zengin") || soru.includes("iş")) {
+    if (trollemeIhtimali < sacmaMod) {
+      cevap = `Para mı? ${isim} senin cüzdanın şu an ${rastgeleSec(olumsuzSifatlar)}. Kripto alacaksın, sonra ağlayacaksın 💀`;
+    } else {
+      cevap = `Para akışı ${rastgeleSec(olumluSifatlar)} olacak! Ama har vurup harman savurma, yoksa yine sıfır çekersin 🤑🚀`;
+    }
   }
-});
-
-// Konfeti patlatma fonksiyonu
-function launchConfetti(count = 80) {
-  const confetti = document.getElementById('confetti');
-  const colors = ['#00ffea','#ff00aa','#ffff00','#ff3366','#00ff88'];
-
-  for(let i = 0; i < count; i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random()*100 + 'vw';
-    p.style.background = colors[Math.floor(Math.random()*colors.length)];
-    p.style.animationDuration = (Math.random()*2 + 2) + 's';
-    p.style.animationDelay = Math.random()*0.5 + 's';
-    confetti.appendChild(p);
-
-    setTimeout(()=> p.remove(), 5000);
+  else if (soru.includes("gelecek") || soru.includes("olacak") || soru.includes("ne olacak")) {
+    cevap = `Geleceğin ${rastgeleSec(emojiSetleri)} şeklinde gözüküyor. ${isim}, büyük ihtimalle ya çok zengin olucan ya da çok pişman... %50/%50 👽`;
   }
+  else {
+    // Genel saçma cevaplar
+    const genelCevaplar = [
+      `${isim}, sorduğun şey çok derin... Ama bence bırak, git bi çay koy, her şey hallolur ☕`,
+      `Kanka o iş ${rastgeleSec(olumluSifatlar)} olacak ama sen yine erteleyeceksin, klasik senlik 😂`,
+      `Falımda ${rastgeleSec(emojiSetleri)} çıktı. Yorumu sana bırakıyorum...`,
+      `Bana ${isim} diye hitap etme artık, ben AI’yim, saygı duy lan 😤`,
+      `Cevap: Hayır. Ama sen yine de deneyeceksin, çünkü inatçısın 🐸`
+    ];
+    cevap = rastgeleSec(genelCevaplar);
+  }
+
+  // Son dokunuş: biraz daha kişiselleştir
+  if (isim.length > 1) {
+    cevap = cevap.replace("sen", isim);
+  }
+
+  cevapAlani.innerHTML = cevap;
 }
 </script>
+
 </body>
 </html>
