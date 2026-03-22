@@ -3,167 +3,191 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bir AI • 2026 Edition</title>
+  <title>???</title>
   <style>
-    body {
-      background: linear-gradient(135deg, #1a0033, #000d1a);
-      color: #e0e0ff;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      min-height: 100vh;
+    * {
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: #000;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+      cursor: url('https://cur.cursors-4u.net/nature/nat-10/nat923.cur'), auto;
+      /* Alternatif cursor linki: https://i.imgur.com/8zJ0ZfW.png (kanlı el) */
+      image-rendering: pixelated;
+    }
+
+    /* Arka plan — karanlık, hafif hareketli glitch + creepy texture */
+    #bg {
+      position: fixed;
+      inset: 0;
+      background: 
+        url('https://media.giphy.com/media/3o6Zt6KHxJTbXCnSvu/giphy.gif') center/cover no-repeat,
+        radial-gradient(circle at 20% 30%, rgba(20,0,0,0.7) 0%, transparent 60%),
+        #000;
+      opacity: 0.35;
+      z-index: -2;
+      animation: glitch-bg 12s infinite steps(1);
+      pointer-events: none;
+    }
+
+    @keyframes glitch-bg {
+      0%, 100% { transform: translate(0,0); }
+      2%  { transform: translate(-2px, 1px); opacity: 0.4; }
+      4%  { transform: translate(2px, -2px); opacity: 0.25; }
+      6%  { transform: translate(-1px, 3px); }
+      8%, 10% { transform: translate(0,0); opacity: 0.35; }
+    }
+
+    .container {
+      height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
-    }
-    h1 {
-      font-size: 3rem;
-      margin: 20px 0;
-      background: linear-gradient(90deg, #ff00cc, #00ffff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(0,255,255,0.5);
-    }
-    .container {
-      background: rgba(20, 20, 60, 0.6);
-      backdrop-filter: blur(10px);
-      border: 2px solid #00ffff44;
-      border-radius: 20px;
-      padding: 30px;
-      width: 100%;
-      max-width: 600px;
-      box-shadow: 0 10px 40px rgba(0,255,255,0.2);
-    }
-    textarea, input {
-      width: 100%;
-      padding: 14px;
-      margin: 12px 0;
-      border-radius: 12px;
-      border: 2px solid #00ffff44;
-      background: rgba(255,255,255,0.05);
-      color: white;
-      font-size: 1.1rem;
-      resize: none;
-    }
-    textarea:focus, input:focus {
-      outline: none;
-      border-color: #00ffff;
-      box-shadow: 0 0 15px #00ffff66;
-    }
-    button {
-      background: linear-gradient(45deg, #ff00cc, #00ffff);
-      color: black;
-      border: none;
-      padding: 16px 32px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      border-radius: 12px;
-      cursor: pointer;
-      margin: 15px auto;
-      display: block;
-      transition: all 0.3s;
-    }
-    button:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 30px #00ffffaa;
-    }
-    #answer {
-      margin-top: 30px;
-      padding: 20px;
-      background: rgba(0,0,0,0.4);
-      border-radius: 16px;
-      min-height: 120px;
-      font-size: 1.2rem;
-      line-height: 1.5;
-      white-space: pre-wrap;
-      border-left: 5px solid #ff00cc;
-    }
-    .emoji {
-      font-size: 2.5rem;
-      margin: 10px 0;
-      display: block;
       text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 4.8rem;
+      color: #ff0044;
+      text-shadow: 
+        0 0 10px #f00,
+        0 0 30px #800,
+        0 0 60px #400;
+      letter-spacing: 12px;
+      animation: flicker 3s infinite alternate;
+      margin-bottom: 20px;
+    }
+
+    @keyframes flicker {
+      0%,19%,21%,23%,25%,54%,56%,100% { opacity:1; text-shadow: 0 0 30px #f00; }
+      20%,24%,55% { opacity:0.4; text-shadow: none; }
+    }
+
+    p {
+      font-size: 1.6rem;
+      color: #0f0;
+      opacity: 0.7;
+      max-width: 700px;
+      line-height: 1.6;
+      margin: 20px;
+      text-shadow: 0 0 8px #0f0;
+    }
+
+    .blink {
+      animation: blink 1.2s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .hidden-text {
+      position: absolute;
+      bottom: 40px;
+      font-size: 1.1rem;
+      color: #400;
+      opacity: 0;
+      transition: opacity 4s;
+    }
+
+    .container:hover .hidden-text {
+      opacity: 0.6;
+    }
+
+    /* Fareyi hareket ettirince hafif glitch efekti */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(transparent, rgba(255,0,0,0.03));
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s;
+      z-index: -1;
+    }
+
+    body:hover::before {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 
-<h1>KAÇIK FALCI AI</h1>
-<div class="emoji">🪬👽🔮</div>
+<div id="bg"></div>
 
 <div class="container">
-  <input type="text" id="name" placeholder="Adın ne lan? (isteğe bağlı)" />
+  <h1>GİRME<span class="blink">_</span></h1>
+  
+  <p>
+    Burası seni istemiyor.<br>
+    Ama sen yine de geldin.<br><br>
+    
+    <span style="color:#800; font-size:1.3rem;">
+      Kaçmak için çok geç.<br>
+      Zaten kapı yok.
+    </span>
+  </p>
 
-  <textarea id="question" rows="3" placeholder="Sor bakalım kaderine ne yazmışım... (aşk, para, iş, ex'in döner mi vs.)"></textarea>
-
-  <button onclick="falBak()">Falı Aç →</button>
-
-  <div id="answer"></div>
+  <div class="hidden-text">
+    seni izliyor...     gözlerini kırpmadan...
+  </div>
 </div>
 
+<audio id="scare" preload="auto">
+  <source src="https://assets.codepen.io/605876/jumpscare-short.mp3" type="audio/mpeg">
+  <!-- Alternatif ücretsiz kısa jump scare: https://assets.codepen.io/605876/scary-sting.mp3 -->
+  <!-- Ya da https://cdn.freesound.org/previews/612/612611_5674468-lq.mp3 -->
+</audio>
+
 <script>
-// Kaçık Falcı'nın deli kişiliği
-const sacmaYuzdeler = [0, 20, 35, 50, 65, 80]; // % kaç ihtimalle saçmalasın
-const sacmaMod = sacmaYuzdeler[Math.floor(Math.random() * sacmaYuzdeler.length)];
+  const audio = document.getElementById('scare');
 
-const olumluSifatlar = ["epik", "manyak", "efsane", "patlayıcı", "kral", "kraliçe", "uzay boşluğunda parlayan yıldız"];
-const olumsuzSifatlar = ["faciası", "rezalet", "epik fail", "utanç kaynağı", "lanetli", "zombi modu"];
-const emojiSetleri = ["🔥🚀", "💀😂", "🤑👽", "😭🤡", "🌌🪐", "⚡🐸"];
-
-function rastgeleSec(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function falBak() {
-  const isim = document.getElementById("name").value.trim() || "kanka";
-  const soru = document.getElementById("question").value.trim().toLowerCase();
-  const cevapAlani = document.getElementById("answer");
-
-  if (!soru) {
-    cevapAlani.innerHTML = "Lan bi soru sor da fal bakayım, boş boş bakmıyorum burda 👾";
-    return;
-  }
-
-  let cevap = "";
-  const trollemeIhtimali = Math.random() * 100;
-
-  // Soruya göre biraz akıllıca davranmaya çalışalım (çok basit regex ile)
-  if (soru.includes("aşk") || soru.includes("sevgili") || soru.includes("ex") || soru.includes("kız") || soru.includes("erkek")) {
-    if (trollemeIhtimali < sacmaMod) {
-      cevap = `${isim.toUpperCase()}, aşk hayatın tam bir ${rastgeleSec(olumsuzSifatlar)}. Ex'in dönecek ama sen yine aynı hatayı yapacaksın 😂`;
-    } else {
-      cevap = `Aşk konusunda ${rastgeleSec(olumluSifatlar)} olacaksın ${isim}! Yeni biri geliyor, ama sakın hemen "seni seviyorum" deme, rezil olursun 🫶`;
+  // Sayfaya ilk girişte ~3-8 saniye sonra düşük ihtimalle ses çal
+  setTimeout(() => {
+    if (Math.random() < 0.35) {
+      audio.currentTime = 0;
+      audio.volume = 0.7;
+      audio.play().catch(() => {});
     }
-  }
-  else if (soru.includes("para") || soru.includes("para") || soru.includes("zengin") || soru.includes("iş")) {
-    if (trollemeIhtimali < sacmaMod) {
-      cevap = `Para mı? ${isim} senin cüzdanın şu an ${rastgeleSec(olumsuzSifatlar)}. Kripto alacaksın, sonra ağlayacaksın 💀`;
-    } else {
-      cevap = `Para akışı ${rastgeleSec(olumluSifatlar)} olacak! Ama har vurup harman savurma, yoksa yine sıfır çekersin 🤑🚀`;
+  }, 3000 + Math.random() * 5000);
+
+  // Fareyi çok hızlı hareket ettirirse ekstra gerilim
+  let lastX = 0, lastY = 0;
+  let speed = 0;
+
+  document.addEventListener('mousemove', e => {
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    speed = Math.sqrt(dx*dx + dy*dy);
+    lastX = e.clientX;
+    lastY = e.clientY;
+
+    if (speed > 180 && Math.random() < 0.08) {
+      document.body.style.cursor = "url('https://i.imgur.com/8zJ0ZfW.png'), auto";
+      setTimeout(() => {
+        document.body.style.cursor = "url('https://cur.cursors-4u.net/nature/nat-10/nat923.cur'), auto";
+      }, 1200);
     }
-  }
-  else if (soru.includes("gelecek") || soru.includes("olacak") || soru.includes("ne olacak")) {
-    cevap = `Geleceğin ${rastgeleSec(emojiSetleri)} şeklinde gözüküyor. ${isim}, büyük ihtimalle ya çok zengin olucan ya da çok pişman... %50/%50 👽`;
-  }
-  else {
-    // Genel saçma cevaplar
-    const genelCevaplar = [
-      `${isim}, sorduğun şey çok derin... Ama bence bırak, git bi çay koy, her şey hallolur ☕`,
-      `Kanka o iş ${rastgeleSec(olumluSifatlar)} olacak ama sen yine erteleyeceksin, klasik senlik 😂`,
-      `Falımda ${rastgeleSec(emojiSetleri)} çıktı. Yorumu sana bırakıyorum...`,
-      `Bana ${isim} diye hitap etme artık, ben AI’yim, saygı duy lan 😤`,
-      `Cevap: Hayır. Ama sen yine de deneyeceksin, çünkü inatçısın 🐸`
-    ];
-    cevap = rastgeleSec(genelCevaplar);
-  }
+  });
 
-  // Son dokunuş: biraz daha kişiselleştir
-  if (isim.length > 1) {
-    cevap = cevap.replace("sen", isim);
-  }
-
-  cevapAlani.innerHTML = cevap;
-}
+  // Her 20-50 saniyede bir ekranı çok kısa kırmızı yap (subliminal korku)
+  setInterval(() => {
+    if (Math.random() < 0.15) {
+      document.body.style.background = '#200';
+      setTimeout(() => {
+        document.body.style.background = '#000';
+      }, 80 + Math.random()*120);
+    }
+  }, 20000 + Math.random()*30000);
 </script>
 
 </body>
