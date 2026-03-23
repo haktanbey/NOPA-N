@@ -1,196 +1,103 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>
-이곳에 들어오지 마십시오</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      height: 100vh;
-      background: #000;
-      color: #0f0;
-      font-family: 'Courier New', Courier, monospace;
-      overflow: hidden;
-      cursor: url('https://cur.cursors-4u.net/nature/nat-10/nat923.cur'), auto;
-      /* Alternatif cursor linki: https://i.imgur.com/8zJ0ZfW.png (kanlı el) */
-      image-rendering: pixelated;
-    }
-
-    /* Arka plan — karanlık, hafif hareketli glitch + creepy texture */
-    #bg {
-      position: fixed;
-      inset: 0;
-      background: 
-        url('https://tenor.com/search/moving-eyes-gifs') center/cover no-repeat,
-        radial-gradient(circle at 20% 30%, rgba(20,0,0,0.7) 0%, transparent 60%),
-        #000;
-      opacity: 0.35;
-      z-index: -2;
-      animation: glitch-bg 12s infinite steps(1);
-      pointer-events: none;
-    }
-
-    @keyframes glitch-bg {
-      0%, 100% { transform: translate(0,0); }
-      2%  { transform: translate(-2px, 1px); opacity: 0.4; }
-      4%  { transform: translate(2px, -2px); opacity: 0.25; }
-      6%  { transform: translate(-1px, 3px); }
-      8%, 10% { transform: translate(0,0); opacity: 0.35; }
-    }
-
-    .container {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    h1 {
-      font-size: 4.8rem;
-      color: #ff0044;
-      text-shadow: 
-        0 0 10px #f00,
-        0 0 30px #800,
-        0 0 60px #400;
-      letter-spacing: 12px;
-      animation: flicker 3s infinite alternate;
-      margin-bottom: 20px;
-    }
-
-    @keyframes flicker {
-      0%,19%,21%,23%,25%,54%,56%,100% { opacity:1; text-shadow: 0 0 30px #f00; }
-      20%,24%,55% { opacity:0.4; text-shadow: none; }
-    }
-
-    p {
-      font-size: 1.6rem;
-      color: #0f0;
-      opacity: 0.7;
-      max-width: 700px;
-      line-height: 1.6;
-      margin: 20px;
-      text-shadow: 0 0 8px #0f0;
-    }
-
-    .blink {
-      animation: blink 1.2s step-end infinite;
-    }
-
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
-    .hidden-text {
-      position: absolute;
-      bottom: 40px;
-      font-size: 1.1rem;
-      color: #400;
-      opacity: 0;
-      transition: opacity 4s;
-    }
-
-    .container:hover .hidden-text {
-      opacity: 0.6;
-    }
-
-    /* Fareyi hareket ettirince hafif glitch efekti */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(transparent, rgba(255,0,0,0.03));
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.6s;
-      z-index: -1;
-    }
-
-    body:hover::before {
-      opacity: 1;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacked by Katreos
+    @k4treos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Cinzel|Nunito|Poiret+One');
+        body, html {
+            height: 100%;
+            background: black;
+            position: relative;
+            margin: 0;
+            overflow: hidden;
+            color: white;
+            font-family: 'Cinzel', serif;
+        }
+        #particles-js {
+            width: 100%;
+            height: 100%;
+            background: black;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .center-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+            width: 100%;
+        }
+        h1 {
+            font-size: 5em;
+            letter-spacing: 0.35em;
+            text-shadow: 0 0 25px rgba(255,255,255,.85);
+            animation: rotate 20s linear infinite, glow 2s infinite alternate;
+            margin-bottom: 20px;
+        }
+        .nickname {
+            font-size: 8em;
+            letter-spacing: 0.2em;
+            text-shadow: 0 0 40px rgba(255,255,255,.9);
+            animation: glow 3s infinite alternate, pulse 4s infinite;
+            margin: 80px 0;
+        }
+        @keyframes rotate {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px white; }
+            to { text-shadow: 0 0 50px white; }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        iframe { display: none; }
+        p {
+            font-size: 2em;
+            letter-spacing: 0.2em;
+            margin-top: 50px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
 </head>
 <body>
-
-<div id="bg"></div>
-
-<div class="container">
-  <h1>GİRME<span class="blink">_</span></h1>
-  
-  <p>
-    Мне очень хочется, чтобы ты был здесь.<br>
-    Но ты всё равно пришла..<br><br>
+    <div id="particles-js"></div>
     
-    <span style="color:#800; font-size:1.3rem;">
-      Уже слишком поздно бежать.<br>
-      
-Двери всё равно нет.
-    </span>
-  </p>
+    <!-- ZULU şarkı 0-12 saniye çalıyor -->
+    <iframe src="https://www.youtube.com/embed/tSf6IV0HDpQ?autoplay=1&start=0&end=12&mute=0" allow="autoplay"></iframe>
+    
+    <div class="center-content">
+        <h1>@k4treos :)</h1>
+        <div class="nickname">Q4</div>
+        <p>System Compromised</p>
+    </div>
 
-  <div class="hidden-text">
-    Он наблюдает за тобой... не моргая...
-  </div>
-</div>
-
-<audio id="scare" preload="auto">
-  <source src="https://assets.codepen.io/605876/jumpscare-short.mp3" type="audio/mpeg">
-  <!-- Alternatif ücretsiz kısa jump scare: https://assets.codepen.io/605876/scary-sting.mp3 -->
-  <!-- Ya da https://cdn.freesound.org/previews/612/612611_5674468-lq.mp3 -->
-</audio>
-
-<script>
-  const audio = document.getElementById('scare');
-
-  // Sayfaya ilk girişte ~3-8 saniye sonra düşük ihtimalle ses çal
-  setTimeout(() => {
-    if (Math.random() < 0.35) {
-      audio.currentTime = 0;
-      audio.volume = 0.7;
-      audio.play().catch(() => {});
-    }
-  }, 3000 + Math.random() * 5000);
-
-  // Fareyi çok hızlı hareket ettirirse ekstra gerilim
-  let lastX = 0, lastY = 0;
-  let speed = 0;
-
-  document.addEventListener('mousemove', e => {
-    const dx = e.clientX - lastX;
-    const dy = e.clientY - lastY;
-    speed = Math.sqrt(dx*dx + dy*dy);
-    lastX = e.clientX;
-    lastY = e.clientY;
-
-    if (speed > 180 && Math.random() < 0.08) {
-      document.body.style.cursor = "url('https://i.imgur.com/8zJ0ZfW.png'), auto";
-      setTimeout(() => {
-        document.body.style.cursor = "url('https://cur.cursors-4u.net/nature/nat-10/nat923.cur'), auto";
-      }, 1200);
-    }
-  });
-
-  // Her 20-50 saniyede bir ekranı çok kısa kırmızı yap (subliminal korku)
-  setInterval(() => {
-    if (Math.random() < 0.15) {
-      document.body.style.background = '#200';
-      setTimeout(() => {
-        document.body.style.background = '#000';
-      }, 80 + Math.random()*120);
-    }
-  }, 20000 + Math.random()*30000);
-</script>
-
+    <script>
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": false },
+                "size": { "value": 5, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 4, "direction": "none", "random": false, "straight": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } }
+            },
+            "retina_detect": true
+        });
+    </script>
 </body>
-</html>
+</html>https://www.youtube.com/watch?v=Ct6BUPvE2sM&list=RDCt6BUPvE2sM&start_radio=1
